@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dto.UserDataDTO;
 import com.kiruthika.job.Service.RegistrationService;
@@ -20,14 +21,13 @@ public class JobApplicationController {
 
     @GetMapping("/RegistrationForm")
     public String showJobForm() {
-        return "RegistrationForm";
+        return "Success";
     }
 
-    @PostMapping("/submitJobApplication")
-    public String submitJobApplication( UserDataDTO userDataDTO) {
-     registrationService.registerUser(userDataDTO);
+    // @PostMapping("/submitJobApplication")
+    // public ResponseEntity<String> submitJobApplication(@ResponseBody UserDataDTO userDataDTO) {
+    //  registrationService.registerUser(userDataDTO);
 
     //  return new ResponseEntity<>("User created succesfully",HttpStatus.OK);
-    return "successpage";
-    }
+    // }
 }
