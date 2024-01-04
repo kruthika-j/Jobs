@@ -7,14 +7,22 @@ import jakarta.persistence.Id;
 
 @Entity
 public class UserData {
-    private String name;
-    private String password;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-
+    private String name;
+    private String password;
+    private Role role; 
+    private enum Role {
+        EMPLOYER,JOBSEEKER
+    };
+    
+    
     public Long getUserId() {
         return userId;
+    }
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -39,5 +47,16 @@ public class UserData {
     public UserData(String name, String password) {
         this.name = name;
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+    public UserData save(UserData userData) {
+        return null;
     }
 }
