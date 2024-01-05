@@ -15,16 +15,17 @@ public class UserData {
     private String name;
     private String password;
     @Enumerated(EnumType.STRING)
-    private Role role; 
+    private Role role;
+
     private enum Role {
         EMPLOYER,
-        JOBSEEKER
+        JOBSEEKER;
     };
-    
-    
+
     public Long getUserId() {
         return userId;
     }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
@@ -60,6 +61,7 @@ public class UserData {
     public void setRole(Role role) {
         this.role = role;
     }
+
     public UserData save(UserData userData) {
         return null;
     }

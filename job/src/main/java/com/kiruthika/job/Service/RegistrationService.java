@@ -1,5 +1,7 @@
 package com.kiruthika.job.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +21,10 @@ import com.kiruthika.job.Repository.UserDataRepository;
         public UserData getUser(Long userId) {
             return userDataRepository.findById(userId).orElse(null);
         }
+
+        public List<UserData> getAllUsers() {
+            return userDataRepository.findAll();
+        }
+        
     }
 
