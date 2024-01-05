@@ -8,6 +8,6 @@ import com.kiruthika.job.Repository.JobListRepository;
 @Service
 public class JobListingService {
   
-      @Autowired
+    @Autowired
     private JobListRepository jobListRepository;
 }

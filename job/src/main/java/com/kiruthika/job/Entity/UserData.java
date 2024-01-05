@@ -17,7 +17,8 @@ public class UserData {
     @Enumerated(EnumType.STRING)
     private Role role; 
     private enum Role {
-        EMPLOYER,JOBSEEKER
+        EMPLOYER,
+        JOBSEEKER
     };
     
     
