@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,16 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dto.UserDataDTO;
 import com.kiruthika.job.Entity.JobApplication;
+import com.kiruthika.job.Entity.JobList;
 import com.kiruthika.job.Entity.UserData;
+import com.kiruthika.job.Repository.JobListRepository;
+import com.kiruthika.job.Service.JobListingService;
 import com.kiruthika.job.Service.RegistrationService;
 
 @RestController
 public class JobApplicationController {
     private RegistrationService registrationService;
+    private JobListingService jobListingService;
+
 
     @Autowired
-    public JobApplicationController(RegistrationService registrationService) {
+    public JobApplicationController(RegistrationService registrationService,JobListingService jobListingService) {
         this.registrationService = registrationService;
+        this.jobListingService = jobListingService;
+
     }
     @GetMapping("/users/{userId}")
     public ResponseEntity<Object> showJobForm(@PathVariable Long userId) {
@@ -46,12 +54,33 @@ public class JobApplicationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
     }
+    
+    @PostMapping("/create-users")
+    public ResponseEntity<Object> createUser(@RequestBody UserData userData){
+        UserData createdUser = registrationService.createUser(userData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
 
+    @GetMapping("/jobs")
+    public ResponseEntity<List<JobList>> getAllJobs() {
+        List<JobList> jobList = jobListingService.getAllJobs();
 
-    // @PostMapping("/submitJobApplication")
-    // public ResponseEntity<String> submitJobApplication(UserDataDTO userDataDTO) {
-    //  registrationService.registerUser(userDataDTO);
+        if (!jobList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(jobList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+    }
 
-    //  return new ResponseEntity<>("User created succesfully",HttpStatus.OK);
-    // }
+    @PostMapping("/post-jobs")
+    public ResponseEntity<Object> postJobs(@RequestBody JobList jobList){
+        JobList postedJob = jobListingService.postJobs(jobList);
+        return ResponseEntity.status(HttpStatus.CREATED).body(postedJob);
+    }
+
+    @GetMapping("/jobs/employer/{employerId}")
+    public ResponseEntity<List<JobList>> getJobs(@PathVariable Long employerId) {
+    List<JobList> jobList = jobListingService.getJobs(employerId);
+        return ResponseEntity.status(HttpStatus.OK).body(jobList); 
+    }
 }

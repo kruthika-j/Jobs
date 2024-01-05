@@ -8,8 +8,7 @@ import com.kiruthika.job.Entity.JobApplication;
 import com.kiruthika.job.Entity.UserData;
 
 @Repository
-public interface JobApplicationRepository extends CrudRepository<JobApplication, Long> {
+public interface JobApplicationRepository extends JpaRepository<JobApplication, Long> {
 
-    UserData save(UserData userData);
    
 }

@@ -25,6 +25,11 @@ import com.kiruthika.job.Repository.UserDataRepository;
         public List<UserData> getAllUsers() {
             return userDataRepository.findAll();
         }
+
+        public UserData createUser(UserData userData) {
+                return userDataRepository.save(userData);
+           
+        }
         
     }
 
