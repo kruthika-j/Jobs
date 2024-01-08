@@ -10,6 +10,8 @@ import com.kiruthika.job.Entity.UserData;
 import com.kiruthika.job.Repository.ResumeManagementRepository;
 import com.kiruthika.job.Repository.UserDataRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class ResumeManagementService {
     @Autowired
@@ -25,5 +27,12 @@ public class ResumeManagementService {
         UserData data = userDataRepo.findById(jobSeekerId).get();
         return resumeManagementRepository.findByjobSeekerId(data);
     }
-   
+    public ResumeManagement postResumes(ResumeManagement resumeManagement) {
+        return resumeManagementRepository.save(resumeManagement);
+    }
+
+    public void deleteAllResumesByJobSeekerId(Long jobSeekerId) {
+        UserData userData = userDataRepo.findById(jobSeekerId).get();
+        resumeManagementRepository.deleteByjobSeekerId(userData);
+    }
 }

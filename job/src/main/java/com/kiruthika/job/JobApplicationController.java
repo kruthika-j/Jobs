@@ -4,9 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,18 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dto.UserDataDTO;
-import com.kiruthika.job.Entity.JobApplication;
 import com.kiruthika.job.Entity.JobList;
 import com.kiruthika.job.Entity.ResumeManagement;
 import com.kiruthika.job.Entity.UserData;
-import com.kiruthika.job.Repository.JobListRepository;
 import com.kiruthika.job.Service.JobListingService;
 import com.kiruthika.job.Service.RegistrationService;
 import com.kiruthika.job.Service.ResumeManagementService;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @RestController
 public class JobApplicationController {
@@ -70,7 +62,7 @@ public class JobApplicationController {
     }
 
     @DeleteMapping("/users/delete/{userId}")
-    @ResponseBody
+
     public String deleteUser(@PathVariable Long userId){
         try {
             registrationService.deleteUser(userId);
@@ -131,5 +123,17 @@ public class JobApplicationController {
     public ResponseEntity<List<ResumeManagement>> getResumeByUserId(@PathVariable Long jobSeekerId) {
         List<ResumeManagement> resumes = resumeManagementService.getResumeById(jobSeekerId);
         return ResponseEntity.status(HttpStatus.OK).body(resumes);
+    }
+
+    @PostMapping("post-resumes")
+    public ResponseEntity<Object> postResumes(@RequestBody ResumeManagement resumeManagement) {
+        ResumeManagement postedresume = resumeManagementService.postResumes(resumeManagement);
+        return ResponseEntity.status(HttpStatus.CREATED).body(postedresume);
+    }
+
+    @DeleteMapping("resumes/delete/{jobSeekerId}")
+    public String deleteResumeById(@PathVariable Long jobSeekerId){
+        resumeManagementService.deleteAllResumesByJobSeekerId(jobSeekerId);
+        return "resumes deleted";
     }
 }
