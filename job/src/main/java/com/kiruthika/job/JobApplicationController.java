@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dto.UserDataDTO;
 import com.kiruthika.job.Entity.JobApplication;
 import com.kiruthika.job.Entity.JobList;
+import com.kiruthika.job.Entity.ResumeManagement;
 import com.kiruthika.job.Entity.UserData;
 import com.kiruthika.job.Repository.JobListRepository;
 import com.kiruthika.job.Service.JobListingService;
 import com.kiruthika.job.Service.RegistrationService;
+import com.kiruthika.job.Service.ResumeManagementService;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,11 +32,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class JobApplicationController {
     private RegistrationService registrationService;
     private JobListingService jobListingService;
+    private ResumeManagementService resumeManagementService;
 
     @Autowired
-    public JobApplicationController(RegistrationService registrationService, JobListingService jobListingService) {
+    public JobApplicationController(RegistrationService registrationService, JobListingService jobListingService, ResumeManagementService resumeManagementService) {
         this.registrationService = registrationService;
         this.jobListingService = jobListingService;
+        this.resumeManagementService = resumeManagementService;
 
     }
 
@@ -73,7 +78,6 @@ public class JobApplicationController {
         } catch (Exception e) {
             return "Error: " + e.getMessage();
         }
-
     }
 
     @GetMapping("/jobs")
@@ -117,4 +121,15 @@ public class JobApplicationController {
         return "All jobs deleted";
     }
 
+    @GetMapping("/resumes")
+    public ResponseEntity<List<ResumeManagement>> getAllResumes(){
+        List<ResumeManagement> resumes = resumeManagementService.getAllResumes();
+        return ResponseEntity.status(HttpStatus.OK).body(resumes);
+    }
+
+    @GetMapping("/resumes/{jobSeekerId}")
+    public ResponseEntity<List<ResumeManagement>> getResumeByUserId(@PathVariable Long jobSeekerId) {
+        List<ResumeManagement> resumes = resumeManagementService.getResumeById(jobSeekerId);
+        return ResponseEntity.status(HttpStatus.OK).body(resumes);
+    }
 }

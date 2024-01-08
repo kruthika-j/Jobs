@@ -13,9 +13,11 @@ public class ResumeManagement {
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resumeId;
+
     @ManyToOne
     @JoinColumn(name = "userId",nullable = false)
     private UserData jobSeekerId;
+    
     private String filePath;
     private Date updationDate;
     
