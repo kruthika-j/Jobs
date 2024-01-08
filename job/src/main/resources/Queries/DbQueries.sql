@@ -11,9 +11,13 @@ create table job_list(
     deadline	date,
     job_id	bigint,
     user_id	bigint,description	varchar(255),
-    requirements	varchar(255),
+    requirements	varhcar(255),
     title	varchar(255)
 );
 
 
 insert into user_data values(3,'Shiny','675','JOBSEEKER');
+src/main/resources/sql/JobListQueries.sql
+
+SELECT * FROM job_list WHERE title = :title;
+

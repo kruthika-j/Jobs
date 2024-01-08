@@ -2,6 +2,7 @@ package com.kiruthika.job.Entity;
 
 import java.sql.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,14 +15,13 @@ public class JobList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;
-    private String Title;
+    private String title;
     @ManyToOne
-    @JoinColumn(name = "userId",nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private UserData employerId;
     private String Description;
     private String Requirements;
     private Date Deadline;
-
 
     public UserData getEmployerId() {
         return employerId;
@@ -32,11 +32,11 @@ public class JobList {
     }
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public void setTitle(String title) {
-        Title = title;
+        title = title;
     }
 
     public String getDescription() {
@@ -68,7 +68,7 @@ public class JobList {
 
     public JobList(Long jobId, String title, String description, String requirements, Date deadline) {
         this.jobId = jobId;
-        Title = title;
+        title = title;
         Description = description;
         Requirements = requirements;
         Deadline = deadline;
