@@ -28,8 +28,14 @@ import com.kiruthika.job.Repository.UserDataRepository;
 
         public UserData createUser(UserData userData) {
                 return userDataRepository.save(userData);
-           
         }
         
+        public void deleteUser(Long userId){
+            if (userDataRepository.existsById(userId)) {
+                userDataRepository.deleteById(userId);
+            } else {
+                throw new RuntimeException("User with ID " + userId + " not found");
+            }
+        }
     }
 

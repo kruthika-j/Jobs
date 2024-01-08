@@ -23,6 +23,7 @@ import com.kiruthika.job.Repository.JobListRepository;
 import com.kiruthika.job.Service.JobListingService;
 import com.kiruthika.job.Service.RegistrationService;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @RestController
 public class JobApplicationController {
@@ -63,6 +64,18 @@ public class JobApplicationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
+    @DeleteMapping("/users/delete/{userId}")
+    @ResponseBody
+    public String deleteUser(@PathVariable Long userId){
+        try {
+            registrationService.deleteUser(userId);
+            return "User removed";
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
+
+    }
+
     @GetMapping("/jobs")
     public ResponseEntity<List<JobList>> getAllJobs() {
         List<JobList> jobList = jobListingService.getAllJobs();
@@ -92,5 +105,16 @@ public class JobApplicationController {
         return ResponseEntity.status(HttpStatus.OK).body(jobList);
     }
 
+    @DeleteMapping("/jobs/delete/{jobId}")
+    public String deleteJob(@PathVariable Long jobId) {
+        jobListingService.deleteJob(jobId);
+        return "Success";
+    }
+
+    @DeleteMapping("jobs/deleteAll")
+    public String deleteAllJobs(){
+        jobListingService.deleteAllJobs();
+        return "All jobs deleted";
+    }
 
 }

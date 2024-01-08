@@ -36,5 +36,13 @@ public class JobListingService {
    public List<JobList> getJobsByTitle(String title) {
         return jobListRepository.findByTitle(title);
     }
+
+    public void deleteJob(Long jobId) {
+        jobListRepository.deleteById(jobId);
+    }
+
+    public void deleteAllJobs(){
+        jobListRepository.deleteAll();
+    }
         
 }
