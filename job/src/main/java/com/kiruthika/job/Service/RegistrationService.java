@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dto.UserDataDTO;
 import com.kiruthika.job.Entity.JobApplication;
 import com.kiruthika.job.Entity.UserData;
 import com.kiruthika.job.Repository.JobApplicationRepository;

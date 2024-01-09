@@ -1,7 +1,7 @@
 create database user_login;
 use user_login;
 create table user_data(
-    user_id	bigint,
+    user_id	bigint PRIMARY KEY,
     name varchar(255),
     password varchar(255),
     role ENUM('EMPLOYER','JOBSEEKER')
@@ -9,11 +9,32 @@ create table user_data(
 
 create table job_list(
     deadline date,
-    job_id	bigint,
-    user_id	bigint,description	varchar(255),
+    job_id	bigint PRIMARY KEY,
+    user_id	bigint,
+    description	varchar(255),
     requirements varhcar(255),
-    title varchar(255)
+    title varchar(255),
+    FOREIGN KEY (user_id) REFERENCES user_data(user_id)
 );
 
-insert into user_data values(3,'Shiny','675','JOBSEEKER');
+create table resume_management(
+    resume_id bigint PRIMARY KEY,
+    user_id bigint,
+    file_path varchar(255),
+    updation_date date,
+    FOREIGN KEY (user_id) REFERENCES user_data(user_id)
+);
+
+insert into user_data values(1,'Alice','123','JOBSEEKER');
+insert into user_data values(2,'Bob','456','EMPLOYER');
+
+insert into job_list values('2024-01-01',1,2,'developing project','SpringBoot','Developer');
+insert into job_list values('2024-01-01',2,2,'Teaching','Physics','Teacher');
+
+insert into resume_management values('2024-01-01',1,1,'home\resume.doc');
+insert into resume_management values('2024-01-01',2,1,'home\MyResume.doc');
+
+select * from user_data;
+select * from job_list;
+select * from resume_management;
 

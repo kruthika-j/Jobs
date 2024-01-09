@@ -17,22 +17,25 @@ public class ResumeManagementService {
     @Autowired
     private ResumeManagementRepository resumeManagementRepository;
 
-     @Autowired
+    @Autowired
     private UserDataRepository userDataRepo;
 
-   public List<ResumeManagement> getAllResumes() {
+    public List<ResumeManagement> getAllResumes() {
         return resumeManagementRepository.findAll();
     }
+
     public List<ResumeManagement> getResumeById(Long jobSeekerId) {
         UserData data = userDataRepo.findById(jobSeekerId).get();
         return resumeManagementRepository.findByjobSeekerId(data);
     }
+
     public ResumeManagement postResumes(ResumeManagement resumeManagement) {
         return resumeManagementRepository.save(resumeManagement);
     }
 
     public void deleteAllResumesByJobSeekerId(Long jobSeekerId) {
         UserData userData = userDataRepo.findById(jobSeekerId).get();
+        System.out.println("UserData:::" + userData.getName());
         resumeManagementRepository.deleteByjobSeekerId(userData);
     }
 }
