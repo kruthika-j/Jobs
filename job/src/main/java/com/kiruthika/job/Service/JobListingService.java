@@ -3,7 +3,6 @@ package com.kiruthika.job.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
 import org.springframework.stereotype.Service;
 
 import com.kiruthika.job.Entity.JobList;

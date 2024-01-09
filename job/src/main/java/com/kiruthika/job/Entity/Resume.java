@@ -7,9 +7,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 @Entity
-public class ResumeManagement {
+public class Resume {
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resumeId;
@@ -20,16 +21,21 @@ public class ResumeManagement {
     
     private String filePath;
     private Date updationDate;
+     @Lob
+    private byte[] resumeFile;
     
-    public ResumeManagement() {
-    }
-   
-    public ResumeManagement(Long resumeId, UserData jobSeekerId, String filePath, Date updationDate) {
+    public Resume(Long resumeId, UserData jobSeekerId, String filePath, Date updationDate,
+            byte[] resumeFile) {
         this.resumeId = resumeId;
         this.jobSeekerId = jobSeekerId;
         this.filePath = filePath;
         this.updationDate = updationDate;
+        this.resumeFile = resumeFile;
     }
+
+    public Resume() {
+    }
+   
 
     public UserData getJobSeekerId() {
         return jobSeekerId;
@@ -56,6 +62,14 @@ public class ResumeManagement {
 
     public void setResumeId(Long resumeId) {
         this.resumeId = resumeId;
+    }
+
+    public byte[] getResumeFile() {
+        return resumeFile;
+    }
+
+    public void setResumeFile(byte[] resumeFile) {
+        this.resumeFile = resumeFile;
     }
     
 }

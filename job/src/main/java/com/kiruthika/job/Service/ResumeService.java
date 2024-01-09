@@ -4,38 +4,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-import com.kiruthika.job.Entity.JobList;
-import com.kiruthika.job.Entity.ResumeManagement;
+import com.kiruthika.job.Entity.Resume;
 import com.kiruthika.job.Entity.UserData;
-import com.kiruthika.job.Repository.ResumeManagementRepository;
+import com.kiruthika.job.Repository.ResumeRepository;
 import com.kiruthika.job.Repository.UserDataRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class ResumeManagementService {
+public class ResumeService {
     @Autowired
-    private ResumeManagementRepository resumeManagementRepository;
+    private ResumeRepository resumeManagementRepository;
 
     @Autowired
     private UserDataRepository userDataRepo;
 
-    public List<ResumeManagement> getAllResumes() {
+    public List<Resume> getAllResumes() {
         return resumeManagementRepository.findAll();
     }
 
-    public List<ResumeManagement> getResumeById(Long jobSeekerId) {
+    public List<Resume> getResumeById(Long jobSeekerId) {
         UserData data = userDataRepo.findById(jobSeekerId).get();
         return resumeManagementRepository.findByjobSeekerId(data);
     }
 
-    public ResumeManagement postResumes(ResumeManagement resumeManagement) {
+    public Resume postResumes(Resume resumeManagement) {
         return resumeManagementRepository.save(resumeManagement);
     }
 
     public void deleteAllResumesByJobSeekerId(Long jobSeekerId) {
         UserData userData = userDataRepo.findById(jobSeekerId).get();
-        System.out.println("UserData:::" + userData.getName());
         resumeManagementRepository.deleteByjobSeekerId(userData);
     }
 }

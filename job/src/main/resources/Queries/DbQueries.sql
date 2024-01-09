@@ -27,6 +27,8 @@ create table resume_management(
 
 insert into user_data values(1,'Alice','123','JOBSEEKER');
 insert into user_data values(2,'Bob','456','EMPLOYER');
+insert into user_data values(3,'Mathew','3565','EMPLOYER');
+insert into user_data values(4,'Christy','4545','JOBSEEKER');
 
 insert into job_list values('2024-01-01',1,2,'developing project','SpringBoot','Developer');
 insert into job_list values('2024-01-01',2,2,'Teaching','Physics','Teacher');

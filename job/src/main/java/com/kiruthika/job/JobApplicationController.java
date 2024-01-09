@@ -1,5 +1,6 @@
 package com.kiruthika.job;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,27 +12,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kiruthika.job.Entity.JobList;
-import com.kiruthika.job.Entity.ResumeManagement;
+import com.kiruthika.job.Entity.Resume;
 import com.kiruthika.job.Entity.UserData;
+import com.kiruthika.job.Entity.JobApplication;
+import com.kiruthika.job.Service.JobApplicationService;
 import com.kiruthika.job.Service.JobListingService;
 import com.kiruthika.job.Service.RegistrationService;
-import com.kiruthika.job.Service.ResumeManagementService;
+import com.kiruthika.job.Service.ResumeService;
 
 @RestController
 public class JobApplicationController {
     private RegistrationService registrationService;
     private JobListingService jobListingService;
-    private ResumeManagementService resumeManagementService;
+    private ResumeService resumeManagementService;
+    private JobApplicationService jobApplicationService;
 
     @Autowired
-    public JobApplicationController(RegistrationService registrationService, JobListingService jobListingService, ResumeManagementService resumeManagementService) {
+    public JobApplicationController(RegistrationService registrationService, JobListingService jobListingService, ResumeService resumeManagementService, JobApplicationService jobApplicationService) {
         this.registrationService = registrationService;
         this.jobListingService = jobListingService;
         this.resumeManagementService = resumeManagementService;
-
+        this.jobApplicationService = jobApplicationService;
     }
 
     @GetMapping("/users/{userId}")
@@ -114,21 +120,29 @@ public class JobApplicationController {
     }
 
     @GetMapping("/resumes")
-    public ResponseEntity<List<ResumeManagement>> getAllResumes(){
-        List<ResumeManagement> resumes = resumeManagementService.getAllResumes();
+    public ResponseEntity<List<Resume>> getAllResumes(){
+        List<Resume> resumes = resumeManagementService.getAllResumes();
         return ResponseEntity.status(HttpStatus.OK).body(resumes);
     }
 
     @GetMapping("/resumes/{jobSeekerId}")
-    public ResponseEntity<List<ResumeManagement>> getResumeByUserId(@PathVariable Long jobSeekerId) {
-        List<ResumeManagement> resumes = resumeManagementService.getResumeById(jobSeekerId);
+    public ResponseEntity<List<Resume>> getResumeByUserId(@PathVariable Long jobSeekerId) {
+        List<Resume> resumes = resumeManagementService.getResumeById(jobSeekerId);
         return ResponseEntity.status(HttpStatus.OK).body(resumes);
     }
 
     @PostMapping("post-resumes")
-    public ResponseEntity<Object> postResumes(@RequestBody ResumeManagement resumeManagement) {
-        ResumeManagement postedresume = resumeManagementService.postResumes(resumeManagement);
-        return ResponseEntity.status(HttpStatus.CREATED).body(postedresume);
+    public ResponseEntity<Object> postResumes(
+            @RequestPart("resumeManagement") Resume resumeManagement,
+            @RequestPart("resumeFile") MultipartFile resumeFile) {
+
+        try {
+            resumeManagement.setResumeFile(resumeFile.getBytes());
+            Resume postedResume = resumeManagementService.postResumes(resumeManagement);
+            return ResponseEntity.status(HttpStatus.CREATED).body(postedResume);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file.");
+        }
     }
 
     @DeleteMapping("resumes/delete/{jobSeekerId}")
@@ -136,4 +150,20 @@ public class JobApplicationController {
         resumeManagementService.deleteAllResumesByJobSeekerId(jobSeekerId);
         return "resumes deleted";
     }
+    @GetMapping("application/{applicationId}")
+    public ResponseEntity<Object> getApplication(@PathVariable Long applicationId){
+        JobApplication jobApplication = jobApplicationService.getApplication(applicationId);
+        return ResponseEntity.status(HttpStatus.OK).body(jobApplication);
+    }
+
+    @GetMapping("application/jobSeeker/{jobSeekerId}")
+    public ResponseEntity<List<JobApplication>> getApplicationByJobSeekerId(@PathVariable Long jobSeekerId) {
+        List<Resume> applications = jobApplicationService.getApplicationById(jobSeekerId);
+        return ResponseEntity.status(HttpStatus.OK).body(applications);
+    }
+
 }
+
+
+    
+
