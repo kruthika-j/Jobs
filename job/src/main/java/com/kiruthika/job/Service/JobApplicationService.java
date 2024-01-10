@@ -22,7 +22,7 @@ public class JobApplicationService {
       public JobApplication getApplication(Long applicationId) {
             return jobApplicationRepository.findById(applicationId).orElse(null);
         }
-        public List<Resume> getApplicationById(Long jobSeekerId) {
+        public List<JobApplication> getApplicationById(Long jobSeekerId) {
             UserData data = userDataRepo.findById(jobSeekerId).get();
             return jobApplicationRepository.findByjobSeekerId(data);
         }

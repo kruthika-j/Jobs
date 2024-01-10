@@ -158,7 +158,7 @@ public class JobApplicationController {
 
     @GetMapping("application/jobSeeker/{jobSeekerId}")
     public ResponseEntity<List<JobApplication>> getApplicationByJobSeekerId(@PathVariable Long jobSeekerId) {
-        List<Resume> applications = jobApplicationService.getApplicationById(jobSeekerId);
+        List<JobApplication> applications = jobApplicationService.getApplicationById(jobSeekerId);
         return ResponseEntity.status(HttpStatus.OK).body(applications);
     }
 
