@@ -12,6 +12,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleEmptyListException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Empty list");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Empty list.Enter Id"+ ex);
     }
 }

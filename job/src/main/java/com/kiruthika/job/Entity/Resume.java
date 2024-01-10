@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 @Entity
 public class Resume {
@@ -30,11 +29,8 @@ public class Resume {
         this.filePath = filePath;
         this.updationDate = updationDate;
     }
-
     public Resume() {
     }
-   
-
     public UserData getJobSeekerId() {
         return jobSeekerId;
     }
@@ -57,7 +53,6 @@ public class Resume {
     public Long getResumeId() {
         return resumeId;
     }
-
     public void setResumeId(Long resumeId) {
         this.resumeId = resumeId;
     }

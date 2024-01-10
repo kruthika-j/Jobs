@@ -54,12 +54,23 @@ public class JobApplicationController {
 
     @PostMapping("/create-users")
     public ResponseEntity<Object> createUser(@RequestBody UserData userData) {
+        validateUserData(userData);
         UserData createdUser = registrationService.createUser(userData);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
-
+    private void validateUserData(UserData userData) {
+        if (userData.getName() == null || userData.getName().isEmpty()) {
+            throw new IllegalArgumentException("Name must not be empty");
+        }
+        if (userData.getPassword() == null || userData.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password must not be empty");
+        }
+        if (userData.getRole() == null ) {
+            throw new IllegalArgumentException("Invalid role");
+        }
+    }
+    
     @DeleteMapping("/users/delete/{userId}")
-
     public String deleteUser(@PathVariable Long userId) {
         try {
             registrationService.deleteUser(userId);
@@ -82,12 +93,32 @@ public class JobApplicationController {
 
     @PostMapping("/post-jobs")
     public ResponseEntity<Object> postJobs(@RequestBody JobList jobList) {
+        validateJobList(jobList);
         JobList postedJob = jobListingService.postJobs(jobList);
         return ResponseEntity.status(HttpStatus.CREATED).body(postedJob);
     }
+    private void validateJobList(JobList jobList) {
+        if(jobList.getTitle()==null || jobList.getTitle().isEmpty()){
+            throw new IllegalArgumentException("Title must not be empty");
+        }
+        if(jobList.getDescription()==null || jobList.getTitle().isEmpty()){
+            throw new IllegalArgumentException("Description must not be empty");
+
+        }
+        if(jobList.getEmployerId()==null || jobList.getTitle().isEmpty()){
+            throw new IllegalArgumentException("Employer must not be empty");
+
+        }
+        if (jobList.getRequirements()==null || jobList.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("Requirements must not be empty");
+        }
+
+    }
+
+    
 
     @GetMapping("/jobs/employer/{employerId}")
-    public ResponseEntity<List<JobList>> getJobs(@PathVariable Long employerId) {
+    public ResponseEntity<List<JobList>> getJobs(@PathVariable Long employerId)throws Exception {
         List<JobList> jobList = jobListingService.getJobs(employerId);
         return ResponseEntity.status(HttpStatus.OK).body(jobList);
     }
@@ -99,7 +130,7 @@ public class JobApplicationController {
     }
 
     @DeleteMapping("/jobs/delete/{jobId}")
-    public String deleteJob(@PathVariable Long jobId) {
+    public String deleteJob(@PathVariable Long jobId)throws Exception {
         jobListingService.deleteJob(jobId);
         return "Success";
     }
@@ -129,19 +160,19 @@ public class JobApplicationController {
     }
 
     @DeleteMapping("resumes/delete/{jobSeekerId}")
-    public String deleteResumeById(@PathVariable Long jobSeekerId) {
+    public String deleteResumeById(@PathVariable Long jobSeekerId) throws Exception {
         resumeManagementService.deleteAllResumesByJobSeekerId(jobSeekerId);
         return "resumes deleted";
     }
 
     @GetMapping("application/{applicationId}")
-    public ResponseEntity<Object> getApplication(@PathVariable Long applicationId) {
+    public ResponseEntity<Object> getApplication(@PathVariable Long applicationId)throws Exception {
         JobApplicationEntity jobApplication = jobApplicationService.getApplication(applicationId);
         return ResponseEntity.status(HttpStatus.OK).body(jobApplication);
     }
 
     @GetMapping("application/jobSeeker/{jobSeekerId}")
-    public ResponseEntity<List<JobApplicationEntity>> getApplicationByJobSeekerId(@PathVariable Long jobSeekerId) {
+    public ResponseEntity<List<JobApplicationEntity>> getApplicationByJobSeekerId(@PathVariable Long jobSeekerId) throws Exception {
         List<JobApplicationEntity> applications = jobApplicationService.getApplicationById(jobSeekerId);
         return ResponseEntity.status(HttpStatus.OK).body(applications);
     }

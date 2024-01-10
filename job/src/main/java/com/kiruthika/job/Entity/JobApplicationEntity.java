@@ -28,38 +28,29 @@ public class JobApplicationEntity {
     public Long getApplicationId() {
         return applicationId;
     }
-
     public void setApplicationId(Long applicationId) {
         this.applicationId = applicationId;
     }
-
     public UserData getJobSeekerId() {
         return jobSeekerId;
     }
-
     public void setJobSeekerId(UserData jobSeekerId) {
         this.jobSeekerId = jobSeekerId;
     }
-
     public JobList getJobId() {
         return jobId;
     }
-
     public void setJobId(JobList jobId) {
         this.jobId = jobId;
     }
-
     public Date getApplicationDate() {
         return applicationDate;
     }
-
     public void setApplicationDate(Date applicationDate) {
         this.applicationDate = applicationDate;
     }
-
     public JobApplicationEntity() {
     }
-
     public JobApplicationEntity(Long applicationId, UserData jobSeekerId, JobList jobId, Date applicationDate) {
         this.applicationId = applicationId;
         this.jobSeekerId = jobSeekerId;
