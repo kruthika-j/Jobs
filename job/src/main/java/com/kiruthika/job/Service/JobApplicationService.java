@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kiruthika.job.Entity.JobApplication;
+import com.kiruthika.job.Entity.JobApplicationEntity;
 import com.kiruthika.job.Entity.Resume;
 import com.kiruthika.job.Entity.UserData;
 import com.kiruthika.job.Repository.JobApplicationRepository;
@@ -19,10 +19,10 @@ public class JobApplicationService {
     @Autowired
     private UserDataRepository userDataRepo;
     
-      public JobApplication getApplication(Long applicationId) {
+      public JobApplicationEntity getApplication(Long applicationId) {
             return jobApplicationRepository.findById(applicationId).orElse(null);
         }
-        public List<JobApplication> getApplicationById(Long jobSeekerId) {
+        public List<JobApplicationEntity> getApplicationById(Long jobSeekerId) {
             UserData data = userDataRepo.findById(jobSeekerId).get();
             return jobApplicationRepository.findByjobSeekerId(data);
         }

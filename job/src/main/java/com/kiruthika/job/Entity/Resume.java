@@ -21,8 +21,7 @@ public class Resume {
     
     private String filePath;
     private Date updationDate;
-     @Lob
-    private byte[] resumeFile;
+    
     
     public Resume(Long resumeId, UserData jobSeekerId, String filePath, Date updationDate,
             byte[] resumeFile) {
@@ -30,7 +29,6 @@ public class Resume {
         this.jobSeekerId = jobSeekerId;
         this.filePath = filePath;
         this.updationDate = updationDate;
-        this.resumeFile = resumeFile;
     }
 
     public Resume() {
@@ -62,14 +60,6 @@ public class Resume {
 
     public void setResumeId(Long resumeId) {
         this.resumeId = resumeId;
-    }
-
-    public byte[] getResumeFile() {
-        return resumeFile;
-    }
-
-    public void setResumeFile(byte[] resumeFile) {
-        this.resumeFile = resumeFile;
     }
     
 }

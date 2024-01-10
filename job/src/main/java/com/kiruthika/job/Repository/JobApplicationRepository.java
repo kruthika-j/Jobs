@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.kiruthika.job.Entity.JobApplication;
+import com.kiruthika.job.Entity.JobApplicationEntity;
 import com.kiruthika.job.Entity.UserData;
 
 @Repository
-public interface JobApplicationRepository extends JpaRepository<JobApplication, Long> {
-List<JobApplication> findByjobSeekerId(UserData jobSeekerId);
+public interface JobApplicationRepository extends JpaRepository<JobApplicationEntity, Long> {
+List<JobApplicationEntity> findByjobSeekerId(UserData jobSeekerId);
     
 }

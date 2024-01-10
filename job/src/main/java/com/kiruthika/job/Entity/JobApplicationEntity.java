@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class JobApplication {
+public class JobApplicationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long applicationId;
@@ -57,10 +57,10 @@ public class JobApplication {
         this.applicationDate = applicationDate;
     }
 
-    public JobApplication() {
+    public JobApplicationEntity() {
     }
 
-    public JobApplication(Long applicationId, UserData jobSeekerId, JobList jobId, Date applicationDate) {
+    public JobApplicationEntity(Long applicationId, UserData jobSeekerId, JobList jobId, Date applicationDate) {
         this.applicationId = applicationId;
         this.jobSeekerId = jobSeekerId;
         this.jobId = jobId;
