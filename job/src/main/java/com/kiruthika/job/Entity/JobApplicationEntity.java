@@ -1,6 +1,7 @@
 package com.kiruthika.job.Entity;
 
 import java.sql.Date;
+import java.sql.Time;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,8 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "job_application")
 public class JobApplicationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +27,7 @@ public class JobApplicationEntity {
     private JobList jobId;
 
     private Date applicationDate;
+    private Time applicationTime;
 
     public Long getApplicationId() {
         return applicationId;
@@ -56,5 +60,11 @@ public class JobApplicationEntity {
         this.jobSeekerId = jobSeekerId;
         this.jobId = jobId;
         this.applicationDate = applicationDate;
+    }
+    public Time getApplicationTime() {
+        return applicationTime;
+    }
+    public void setApplicationTime(Time applicationTime) {
+        this.applicationTime = applicationTime;
     }
 }

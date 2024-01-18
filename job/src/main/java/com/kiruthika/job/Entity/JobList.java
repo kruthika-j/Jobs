@@ -8,26 +8,50 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "job_list")
 public class JobList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;
+
     private String title;
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
-    private UserData employerId;
+    @JoinColumn(name = "uname", nullable = false)
+    private Employer uname;
     private String Description;
     private String Requirements;
     private Date Deadline;
+    private Date PostedDate;
+    private String Category;
+    private String Location;
+    
+    
 
-    public UserData getEmployerId() {
-        return employerId;
+    public String getCategory() {
+        return Category;
     }
 
-    public void setEmployerId(UserData employerId) {
-        this.employerId = employerId;
+    public void setCategory(String category) {
+        Category = category;
+    }
+
+    public String getLocation() {
+        return Location;
+    }
+
+    public void setLocation(String location) {
+        Location = location;
+    }
+
+    public Employer getUname() {
+        return uname;
+    }
+    
+    public void setUname(Employer uname) {
+        this.uname = uname;
     }
 
     public String getTitle() {
@@ -35,7 +59,7 @@ public class JobList {
     }
 
     public void setTitle(String title) {
-        title = title;
+        this.title = title;
     }
 
     public String getDescription() {
@@ -65,12 +89,18 @@ public class JobList {
     public JobList() {
     }
 
-    public JobList(Long jobId, String title, String description, String requirements, Date deadline) {
+  
+    public JobList(Long jobId, String title, Employer uname, String description, String requirements,
+            Date deadline, Date postedDate,String Category,String Location) {
         this.jobId = jobId;
-        title = title;
+        this.title = title;
+        this.uname = uname;
         Description = description;
         Requirements = requirements;
         Deadline = deadline;
+        PostedDate = postedDate;
+        this.Category = Category;
+        this.Location = Location;
     }
 
     public Long getJobId() {
@@ -81,4 +111,11 @@ public class JobList {
         this.jobId = jobId;
     }
 
+    public Date getPostedDate() {
+        return PostedDate;
+    }
+
+    public void setPostedDate(Date postedDate) {
+        PostedDate = postedDate;
+    }
 }

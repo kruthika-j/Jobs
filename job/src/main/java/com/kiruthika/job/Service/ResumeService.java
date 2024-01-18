@@ -2,6 +2,9 @@ package com.kiruthika.job.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 
 import com.kiruthika.job.Entity.Resume;
@@ -27,7 +30,8 @@ public class ResumeService {
         return resumeManagementRepository.findByjobSeekerId(data);
     }
 
-    public Resume postResumes(Resume resumeManagement) {
+    public Resume postResumes(MultipartFile file,Resume resumeManagement) throws IOException {
+        resumeManagement.setFilePath(file.getBytes());
         return resumeManagementRepository.save(resumeManagement);
     }
 

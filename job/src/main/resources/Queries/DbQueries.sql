@@ -25,6 +25,15 @@ create table resume_management(
     FOREIGN KEY (user_id) REFERENCES user_data(user_id)
 );
 
+create table job_application(
+    application_id bigint PRIMARY KEY,
+    application_date date,
+    job_id bigint,
+    user_id bigint 
+    FOREIGN KEY (user_id) REFERENCES user_data(user_id),
+    FOREIGN KEY (job_id) REFERENCES job_list(job_id)
+)
+
 insert into user_data values(1,'Alice','123','JOBSEEKER');
 insert into user_data values(2,'Bob','456','EMPLOYER');
 insert into user_data values(3,'Mathew','3565','EMPLOYER');
@@ -36,7 +45,10 @@ insert into job_list values('2024-01-01',2,2,'Teaching','Physics','Teacher');
 insert into resume_management values('2024-01-01',1,1,'home\resume.doc');
 insert into resume_management values('2024-01-01',2,1,'home\MyResume.doc');
 
+insert into job_application (application_id,application_date,job_id,user_id) values(1,'2024-01-01',1,1);
+
 select * from user_data;
 select * from job_list;
 select * from resume_management;
+select * from job_application;
 
