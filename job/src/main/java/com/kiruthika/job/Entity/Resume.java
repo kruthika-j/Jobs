@@ -19,28 +19,23 @@ public class Resume {
     private Long resumeId;
 
     @ManyToOne
-    @JoinColumn(name = "userId",nullable = false)
-    private UserData jobSeekerId;
+    @JoinColumn(name = "uname",nullable = false)
+    private JobSeeker j_uname;
 
     @Column(name = "filePath", columnDefinition = "BLOB")
     private byte[] filePath;
 
     private Date updationDate;
     
-    public Resume(Long resumeId, UserData jobSeekerId, byte[] filePath, Date updationDate) {
+    public Resume(Long resumeId, JobSeeker j_uname, byte[] filePath, Date updationDate) {
         this.resumeId = resumeId;
-        this.jobSeekerId = jobSeekerId;
+        this.j_uname = j_uname;
         this.filePath = filePath;
         this.updationDate = updationDate;
     }
     public Resume() {
     }
-    public UserData getJobSeekerId() {
-        return jobSeekerId;
-    }
-    public void setJobSeekerId(UserData jobSeekerId) {
-        this.jobSeekerId = jobSeekerId;
-    }
+    
     public byte[] getFilePath() {
         return filePath;
     }
@@ -59,6 +54,12 @@ public class Resume {
     }
     public void setResumeId(Long resumeId) {
         this.resumeId = resumeId;
+    }
+    public JobSeeker getJ_uname() {
+        return j_uname;
+    }
+    public void setJ_uname(JobSeeker j_uname) {
+        this.j_uname = j_uname;
     }
     
 }

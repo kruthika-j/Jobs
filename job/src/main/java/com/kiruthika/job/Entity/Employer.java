@@ -2,8 +2,10 @@ package com.kiruthika.job.Entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="employer")
 public class Employer {
     @Id
     private String uname;

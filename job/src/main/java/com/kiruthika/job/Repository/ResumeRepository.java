@@ -11,7 +11,7 @@ import com.kiruthika.job.Entity.UserData;
 
 @Repository
 public interface ResumeRepository extends JpaRepository<Resume, Long> {
-    List<Resume> findByjobSeekerId(UserData jobSeekerId);
-    @Transactional
-    void deleteByjobSeekerId(UserData jobSeekerId);
+    // List<Resume> findByjobSeekerId(UserData jobSeekerId);
+    // @Transactional
+    // void deleteByjobSeekerId(UserData jobSeekerId);
 }

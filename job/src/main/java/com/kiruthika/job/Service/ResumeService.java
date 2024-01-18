@@ -25,18 +25,18 @@ public class ResumeService {
         return resumeManagementRepository.findAll();
     }
 
-    public List<Resume> getResumeById(Long jobSeekerId) {
-        UserData data = userDataRepo.findById(jobSeekerId).get();
-        return resumeManagementRepository.findByjobSeekerId(data);
-    }
+    // public List<Resume> getResumeById(Long jobSeekerId) {
+    //     UserData data = userDataRepo.findById(jobSeekerId).get();
+    //     return resumeManagementRepository.findByjobSeekerId(data);
+    // }
 
     public Resume postResumes(MultipartFile file,Resume resumeManagement) throws IOException {
         resumeManagement.setFilePath(file.getBytes());
         return resumeManagementRepository.save(resumeManagement);
     }
 
-    public void deleteAllResumesByJobSeekerId(Long jobSeekerId) {
-        UserData userData = userDataRepo.findById(jobSeekerId).get();
-        resumeManagementRepository.deleteByjobSeekerId(userData);
-    }
+    // public void deleteAllResumesByJobSeekerId(Long jobSeekerId) {
+    //     UserData userData = userDataRepo.findById(jobSeekerId).get();
+    //     resumeManagementRepository.deleteByjobSeekerId(userData);
+    // }
 }

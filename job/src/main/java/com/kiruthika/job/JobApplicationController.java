@@ -152,11 +152,11 @@ public class JobApplicationController {
         return ResponseEntity.status(HttpStatus.OK).body(resumes);
     }
 
-    @GetMapping("/resumes/{jobSeekerId}")
-    public ResponseEntity<List<Resume>> getResumeByUserId(@PathVariable Long jobSeekerId) {
-        List<Resume> resumes = resumeManagementService.getResumeById(jobSeekerId);
-        return ResponseEntity.status(HttpStatus.OK).body(resumes);
-    }
+    // @GetMapping("/resumes/{jobSeekerId}")
+    // public ResponseEntity<List<Resume>> getResumeByUserId(@PathVariable Long jobSeekerId) {
+    //     List<Resume> resumes = resumeManagementService.getResumeById(jobSeekerId);
+    //     return ResponseEntity.status(HttpStatus.OK).body(resumes);
+    // }
 
      @PostMapping("/post-resumes")
     public ResponseEntity<Object> postResumes(
@@ -166,17 +166,17 @@ public class JobApplicationController {
         try {
             resume.setFilePath(file.getBytes());
             Resume postedResume = resumeManagementService.postResumes(file, resume);
-            return ResponseEntity.status(HttpStatus.CREATED).body(postedResume);
+            return ResponseEntity.status(HttpStatus.CREATED).body("postedResume");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file");
         }
     }
 
-    @DeleteMapping("/resumes/delete/{jobSeekerId}")
-    public String deleteResumeById(@PathVariable Long jobSeekerId) {
-        resumeManagementService.deleteAllResumesByJobSeekerId(jobSeekerId);
-        return "resumes deleted";
-    }
+    // @DeleteMapping("/resumes/delete/{jobSeekerId}")
+    // public String deleteResumeById(@PathVariable Long jobSeekerId) {
+    //     resumeManagementService.deleteAllResumesByJobSeekerId(jobSeekerId);
+    //     return "resumes deleted";
+    // }
 
     @GetMapping("/application/{applicationId}")
     public ResponseEntity<Object> getApplication(@PathVariable Long applicationId)throws Exception{
