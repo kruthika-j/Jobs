@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kiruthika.job.Entity.JobList;
+import com.kiruthika.job.Entity.JobSeeker;
 import com.kiruthika.job.Entity.Resume;
 import com.kiruthika.job.Entity.UserData;
 import com.kiruthika.job.Entity.Employer;
@@ -48,11 +49,18 @@ public class JobApplicationController {
         this.employerService = employerService;
     }
 //Employer signup
-   @PostMapping("/Register/employer")
+   @PostMapping("/register/employer")
    public ResponseEntity<Object> createEmployer(@RequestBody Employer employer){
         Employer newEmployer = employerService.createEmployer(employer);
         return ResponseEntity.status(HttpStatus.CREATED).body(newEmployer);
    }
+//jobseeker signup
+   @PostMapping("/register/jobseeker")
+   public ResponseEntity<Object> createJobSeeker(@RequestBody JobSeeker jobSeeker) {
+       JobSeeker newJobSeeker = jobSeekerService.createJobSeeker(jobSeeker);
+       return ResponseEntity.status(HttpStatus.CREATED).body(newJobSeeker);
+   }
+   
 //employer details
    @GetMapping("/employer/{uname}")
    public ResponseEntity<Object> getEmployer(@PathVariable String uname) {
@@ -120,7 +128,6 @@ public class JobApplicationController {
             JobList postedJob = jobListingService.postJobs(joblist);
             return ResponseEntity.status(HttpStatus.CREATED).body(postedJob);
         }
-    
 //display jobs by uname of employer
     @GetMapping("/jobs/employer/{uname}")
     public ResponseEntity<List<JobList>> getJobs(@PathVariable String uname)throws Exception {
@@ -145,7 +152,7 @@ public class JobApplicationController {
         jobListingService.deleteAllJobs();
         return "All jobs deleted";
     }
-
+//get all resumes
     @GetMapping("/resumes")
     public ResponseEntity<List<Resume>> getAllResumes() {
         List<Resume> resumes = resumeManagementService.getAllResumes();
@@ -161,12 +168,12 @@ public class JobApplicationController {
      @PostMapping("/post-resumes")
     public ResponseEntity<Object> postResumes(
             @ModelAttribute Resume resume,
-            @RequestParam("file") MultipartFile file
+            @RequestParam("filePath") MultipartFile file
     ) {
         try {
             resume.setFilePath(file.getBytes());
             Resume postedResume = resumeManagementService.postResumes(file, resume);
-            return ResponseEntity.status(HttpStatus.CREATED).body("postedResume");
+            return ResponseEntity.status(HttpStatus.CREATED).body(postedResume);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file");
         }

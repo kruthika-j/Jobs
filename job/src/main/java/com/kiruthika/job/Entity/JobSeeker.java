@@ -13,6 +13,7 @@ public class JobSeeker {
     private String Name;
     private String Contact;
     private String Qualification;
+    
     public String getJ_uname() {
         return j_uname;
     }

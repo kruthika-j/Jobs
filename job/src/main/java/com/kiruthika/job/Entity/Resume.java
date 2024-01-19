@@ -19,7 +19,7 @@ public class Resume {
     private Long resumeId;
 
     @ManyToOne
-    @JoinColumn(name = "uname",nullable = false)
+    @JoinColumn(name = "j_uname",nullable = false)
     private JobSeeker j_uname;
 
     @Column(name = "filePath", columnDefinition = "BLOB")

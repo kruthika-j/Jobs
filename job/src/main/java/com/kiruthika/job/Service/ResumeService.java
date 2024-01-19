@@ -31,7 +31,6 @@ public class ResumeService {
     // }
 
     public Resume postResumes(MultipartFile file,Resume resumeManagement) throws IOException {
-        resumeManagement.setFilePath(file.getBytes());
         return resumeManagementRepository.save(resumeManagement);
     }
 
