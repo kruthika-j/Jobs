@@ -12,7 +12,10 @@ public class EmployerService {
     private EmployerRepository employerRepository;
 
     public Employer createEmployer(Employer employer){
-        return employerRepository.save(employer);
+        if (!employerRepository.existsById(employer.getUname())) {
+            return employerRepository.save(employer);
+        }
+        return employer;
     }
 
     public Employer getEmployer(String uname){
@@ -22,7 +25,8 @@ public class EmployerService {
     public void deleteUser(String uname){
         if (employerRepository.existsById(uname)) {
             employerRepository.deleteById(uname);
-        } else {
+         } 
+       else {
             throw new RuntimeException("User with ID " + uname + " not found");
         }
     }

@@ -30,8 +30,23 @@ public class ResumeService {
     //     return resumeManagementRepository.findByjobSeekerId(data);
     // }
 
-    public Resume postResumes(MultipartFile file,Resume resumeManagement) throws IOException {
-        return resumeManagementRepository.save(resumeManagement);
+    // public Resume postResumes(MultipartFile file,Resume resumeManagement) throws IOException {
+    //     return resumeManagementRepository.save(resumeManagement);
+    // }
+
+    public Resume postResumes(MultipartFile file, Resume resume) throws IOException {
+        try {
+            byte[] fileData = file.getBytes();
+            resume.setFilePath(fileData);
+            Resume postedResume = resumeManagementRepository.save(resume);
+            return postedResume;
+        } catch (IOException e) {
+            e.printStackTrace(); 
+            throw new IOException("Error uploading file", e);
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            throw new RuntimeException("Error posting resumes", e);
+        }
     }
 
     // public void deleteAllResumesByJobSeekerId(Long jobSeekerId) {

@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "job_list")
@@ -23,7 +24,11 @@ public class JobList {
     private Employer uname;
     private String Description;
     private String Requirements;
+
+    @Pattern(regexp = "^[0-3]{1}[0-9]{1}[.-/][0-1]{1}[0-9]{1}[.-/][19|20][0-9]{3}")
     private Date Deadline;
+    
+    @Pattern(regexp = "^[0-3]{1}[0-9]{1}[.-/][0-1]{1}[0-9]{1}[.-/][19|20][0-9]{3}")
     private Date PostedDate;
     private String Category;
     private String Location;

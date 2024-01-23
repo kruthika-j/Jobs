@@ -1,18 +1,36 @@
 package com.kiruthika.job.Entity;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name="employer")
 public class Employer {
-    @Id
+    @Id  
+    @NotNull(message = "enter username")
+    @Pattern(regexp = "^[a-z|A-Z|0-9]{6,12}$",
+            message = "username must be of 6 to 12 length with no special characters")
     private String uname;
 
+    @NotNull(message = "enter password")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\\-_*])([a-zA-Z0-9@#$%^&+=*.\\-_]){3,}$",  
+        message = "enter valid password")
     private String password;
+
+    @Pattern(regexp = "^[A-Z]{1}[0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}$",
+         message = "enter valid company id")
     private String companyId;
+
+
     private String companyName;
+
+    @NotNull
+    @Pattern(regexp ="^[6-9]\\d{9}",
+            message = "enter valid contact number")
     private String Contact;
     private String Location;
     private String Website;

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "resume_management")
@@ -19,17 +20,18 @@ public class Resume {
     private Long resumeId;
 
     @ManyToOne
-    @JoinColumn(name = "j_uname",nullable = false)
-    private JobSeeker j_uname;
+    @JoinColumn(name = "juname",nullable = false)
+    private JobSeeker juname;
 
     @Column(name = "filePath", columnDefinition = "BLOB")
     private byte[] filePath;
 
+    @Pattern(regexp = "^[0-3]{1}[0-9]{1}[.-/][0-1]{1}[0-9]{1}[.-/][19|20][0-9]{3}")
     private Date updationDate;
     
-    public Resume(Long resumeId, JobSeeker j_uname, byte[] filePath, Date updationDate) {
+    public Resume(Long resumeId, JobSeeker juname, byte[] filePath, Date updationDate) {
         this.resumeId = resumeId;
-        this.j_uname = j_uname;
+        this.juname = juname;
         this.filePath = filePath;
         this.updationDate = updationDate;
     }
@@ -55,11 +57,11 @@ public class Resume {
     public void setResumeId(Long resumeId) {
         this.resumeId = resumeId;
     }
-    public JobSeeker getJ_uname() {
-        return j_uname;
+    public JobSeeker getJuname() {
+        return juname;
     }
-    public void setJ_uname(JobSeeker j_uname) {
-        this.j_uname = j_uname;
+    public void setJuname(JobSeeker juname) {
+        this.juname = juname;
     }
     
 }

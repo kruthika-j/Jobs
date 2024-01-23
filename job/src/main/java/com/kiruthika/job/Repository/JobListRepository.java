@@ -15,5 +15,4 @@ public interface JobListRepository extends JpaRepository<JobList, Long> {
     List<JobList> findByTitle(String Title);
 
     void deleteAll();
-
 }
