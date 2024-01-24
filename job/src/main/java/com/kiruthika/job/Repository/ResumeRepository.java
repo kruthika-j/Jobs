@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kiruthika.job.Entity.Resume;
-import com.kiruthika.job.Entity.UserData;
 
 @Repository
 public interface ResumeRepository extends JpaRepository<Resume, Long> {

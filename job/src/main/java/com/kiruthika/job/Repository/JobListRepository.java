@@ -10,7 +10,7 @@ import com.kiruthika.job.Entity.JobList;
 
 @Repository
 public interface JobListRepository extends JpaRepository<JobList, Long> {
-
+    JobList findByJobId(Long jobId);
     List<JobList> findByUname(Employer uname);
     List<JobList> findByTitle(String Title);
 

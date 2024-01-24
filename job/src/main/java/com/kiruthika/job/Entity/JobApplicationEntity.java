@@ -3,6 +3,8 @@ package com.kiruthika.job.Entity;
 import java.sql.Date;
 import java.sql.Time;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,13 +21,14 @@ public class JobApplicationEntity {
     private Long applicationId;
     
     @ManyToOne
-    @JoinColumn(name = "userId",nullable = false)
-    private UserData jobSeekerId;
+    @JoinColumn(name = "jobSeeker",nullable = false)
+    private JobSeeker jobSeeker;
     
     @ManyToOne 
-    @JoinColumn(name = "jobId",nullable = false)
-    private JobList jobId;
+    @JoinColumn(name = "jobList",nullable = false)
+    private JobList jobList;
 
+  
     private Date applicationDate;
     private Time applicationTime;
 
@@ -35,17 +38,12 @@ public class JobApplicationEntity {
     public void setApplicationId(Long applicationId) {
         this.applicationId = applicationId;
     }
-    public UserData getJobSeekerId() {
-        return jobSeekerId;
+   
+    public JobList getJobList() {
+        return jobList;
     }
-    public void setJobSeekerId(UserData jobSeekerId) {
-        this.jobSeekerId = jobSeekerId;
-    }
-    public JobList getJobId() {
-        return jobId;
-    }
-    public void setJobId(JobList jobId) {
-        this.jobId = jobId;
+    public void setJobList(JobList jobList) {
+        this.jobList = jobList;
     }
     public Date getApplicationDate() {
         return applicationDate;
@@ -55,10 +53,10 @@ public class JobApplicationEntity {
     }
     public JobApplicationEntity() {
     }
-    public JobApplicationEntity(Long applicationId, UserData jobSeekerId, JobList jobId, Date applicationDate) {
+    public JobApplicationEntity(Long applicationId, JobSeeker jobSeeker, JobList jobList, Date applicationDate) {
         this.applicationId = applicationId;
-        this.jobSeekerId = jobSeekerId;
-        this.jobId = jobId;
+        this.jobSeeker = jobSeeker;
+        this.jobList = jobList;
         this.applicationDate = applicationDate;
     }
     public Time getApplicationTime() {
@@ -67,4 +65,12 @@ public class JobApplicationEntity {
     public void setApplicationTime(Time applicationTime) {
         this.applicationTime = applicationTime;
     }
+    public JobSeeker getJobSeeker() {
+        return jobSeeker;
+    }
+    public void setJobSeeker(JobSeeker jobSeeker) {
+        this.jobSeeker = jobSeeker;
+    }
+
+   
 }

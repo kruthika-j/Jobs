@@ -53,13 +53,13 @@ public class JobApplicationController {
     }
 //Employer signup
    @PostMapping("/register/employer")
-   public ResponseEntity<Object> createEmployer(@Valid @RequestBody Employer employer)throws RuntimeException,HttpMessageNotReadableException{
-        Employer newEmployer = employerService.createEmployer(employer);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newEmployer);
+   public ResponseEntity<Object> createEmployer(@Valid @RequestBody Employer employer)throws HttpMessageNotReadableException{
+         employerService.createEmployer(employer);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Registered successfully");
    }
 //jobseeker signup
    @PostMapping("/register/jobseeker")
-   public ResponseEntity<Object> createJobSeeker(@RequestBody JobSeeker jobSeeker) throws RuntimeException, HttpMessageNotReadableException{
+   public ResponseEntity<Object> createJobSeeker(@RequestBody JobSeeker jobSeeker) throws HttpMessageNotReadableException{
        JobSeeker newJobSeeker = jobSeekerService.createJobSeeker(jobSeeker);
        return ResponseEntity.status(HttpStatus.CREATED).body(newJobSeeker);
    }
@@ -168,14 +168,36 @@ public class JobApplicationController {
     // }
 
     @GetMapping("/application/{applicationId}")
-    public ResponseEntity<Object> getApplication(@PathVariable Long applicationId)throws Exception{
-        JobApplicationEntity jobApplication = jobApplicationService.getApplication(applicationId);
-        return ResponseEntity.status(HttpStatus.OK).body(jobApplication);
+    public ResponseEntity<Object> getApplication(@PathVariable Long applicationId) throws Exception {
+        try {
+            JobApplicationEntity jobApplication = jobApplicationService.getApplication(applicationId);
+    
+            if (jobApplication != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(jobApplication);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobApplication with ID " + applicationId + " not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving JobApplication");
+        }
     }
+    
 
-    @GetMapping("/application/jobSeeker/{jobSeekerId}")
-    public ResponseEntity<List<JobApplicationEntity>> getApplicationByJobSeekerId(@PathVariable Long jobSeekerId)throws Exception{
-        List<JobApplicationEntity> applications = jobApplicationService.getApplicationById(jobSeekerId);
+    @GetMapping("/application/jobSeeker/{juname}")
+    public ResponseEntity<List<JobApplicationEntity>> getApplicationByJobSeekerId(@PathVariable String juname)throws Exception{
+        List<JobApplicationEntity> applications = jobApplicationService.getApplicationByJuname(juname);
         return ResponseEntity.status(HttpStatus.OK).body(applications);
     }
+
+    @PostMapping("/apply")
+    public ResponseEntity<Object> applyForJob(@RequestBody JobApplicationEntity request) {
+        try {
+            jobApplicationService.applyForJob(request.getJobSeeker(), request.getJobList());
+            return ResponseEntity.status(HttpStatus.CREATED).body("Job application submitted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error applying for the job: " + e.getMessage());
+        }
+    }
+    
 }

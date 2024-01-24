@@ -11,15 +11,22 @@ public class EmployerService {
     @Autowired
     private EmployerRepository employerRepository;
 
-    public Employer createEmployer(Employer employer){
+    public void createEmployer(Employer employer){
         if (!employerRepository.existsById(employer.getUname())) {
-            return employerRepository.save(employer);
+             employerRepository.save(employer);
         }
-        return employer;
+        else {
+            throw new RuntimeException("User with ID " + employer.getUname() + " already exist");
+        }
     }
 
     public Employer getEmployer(String uname){
-        return employerRepository.findByUname(uname);
+        if (employerRepository.existsById(uname)) {
+            return employerRepository.findByUname(uname);
+        } 
+        else {
+            throw new RuntimeException("User with ID " + uname + " not found");
+        }
     }
 
     public void deleteUser(String uname){

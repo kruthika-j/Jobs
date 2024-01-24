@@ -13,7 +13,12 @@ public class JobSeekerService {
     private JobSeekerRepository jobSeekerRepository;
 
     public JobSeeker createJobSeeker(JobSeeker jobSeeker){
-        return jobSeekerRepository.save(jobSeeker);
+        if (!jobSeekerRepository.existsById(jobSeeker.getJuname())) {
+            return jobSeekerRepository.save(jobSeeker);
+        }
+       else {
+           throw new RuntimeException("User with ID " + jobSeeker.getJuname() + " already exist");
+       }
     }
 
     public JobSeeker getJobSeeker(String juname){
