@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
@@ -59,19 +61,19 @@ public class JobApplicationController {
    }
 //jobseeker signup
    @PostMapping("/register/jobseeker")
-   public ResponseEntity<Object> createJobSeeker(@RequestBody JobSeeker jobSeeker) throws HttpMessageNotReadableException{
+   public ResponseEntity<Object> createJobSeeker(@Valid @RequestBody JobSeeker jobSeeker) throws HttpMessageNotReadableException{
        JobSeeker newJobSeeker = jobSeekerService.createJobSeeker(jobSeeker);
        return ResponseEntity.status(HttpStatus.CREATED).body(newJobSeeker);
    }
    
 //employer details
-   @GetMapping("/employer/{uname}")
+   @GetMapping("/employer/profile/{uname}")
    public ResponseEntity<Object> getEmployer(@PathVariable String uname)throws NoResourceFoundException {
        Employer employer = employerService.getEmployer(uname);
        return ResponseEntity.status(HttpStatus.OK).body(employer);
    }
 //jobseeker details
-   @GetMapping("/jobseeker/{juname}")
+   @GetMapping("/jobseeker/profile/{juname}")
    public ResponseEntity<Object> getjobSeeker(@PathVariable String juname) throws NoResourceFoundException {
         JobSeeker jobSeeker = jobSeekerService.getJobSeeker(juname);
         return ResponseEntity.status(HttpStatus.OK).body(jobSeeker);
@@ -94,7 +96,7 @@ public class JobApplicationController {
             return "User Deleted";
     }
 //jobs display in jobseeker login
-    @GetMapping("/jobseeker/jobs")
+    @GetMapping("/jobSeeker/jobs")
     public ResponseEntity<List<JobList>> getAllJobs() {
         List<JobList> jobList = jobListingService.getAllJobs();
 
@@ -108,26 +110,53 @@ public class JobApplicationController {
 //post jobs in employer login
     @PostMapping("/employer/post-job")
         public ResponseEntity<Object> postJobs(@RequestBody JobList joblist)throws HttpMessageNotReadableException{
-            JobList postedJob = jobListingService.postJobs(joblist);
-            return ResponseEntity.status(HttpStatus.CREATED).body(postedJob);
+            try{
+                JobList postedJob = jobListingService.postJobs(joblist);
+                return ResponseEntity.status(HttpStatus.CREATED).body(postedJob);    
+            }
+            catch(Exception e){
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( "Error posting job" + e.getMessage());
+            }
         }
+
+        @PutMapping("/employer/edit-job/{jobId}")
+        public ResponseEntity<Object> editJob(@PathVariable Long jobId, @RequestBody JobList updatedJob) throws HttpMessageNotReadableException {
+            try {
+                JobList editedJob = jobListingService.editJob(jobId, updatedJob);
+
+                if (editedJob != null) {
+                    return ResponseEntity.ok(editedJob);
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job with ID " + jobId + " not found");
+                }
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error editing job: " + e.getMessage());
+            }
+        }
+
 //display jobs by uname of employer
-    @GetMapping("/jobs/employer/{uname}")
+    @GetMapping("/employer/{uname}")
     public ResponseEntity<List<JobList>> getJobs(@PathVariable String uname)throws Exception {
         List<JobList> jobList = jobListingService.getJobs(uname);
         return ResponseEntity.status(HttpStatus.OK).body(jobList);
     }
 //display jobs by title
-    @GetMapping("/jobs/{title}")
+    @GetMapping("/jobSeeker/search/byTitle/{title}")
     public ResponseEntity<List<JobList>> getJobsByTitle(@PathVariable("title") String title) {
         List<JobList> jobList = jobListingService.getJobsByTitle(title);
         return ResponseEntity.status(HttpStatus.OK).body(jobList);
     }
+//display jobs by category
+    @GetMapping("/jobSeeker/search/byCategory/{category}")
+    public ResponseEntity<List<JobList>> getJobsByCategory(@PathVariable("category") String category){
+        List<JobList> joblist = jobListingService.getJobsByCategory(category);
+        return ResponseEntity.status(HttpStatus.OK).body(joblist);
+    }
 //delete jobs by id
-    @DeleteMapping("/jobs/delete/{jobId}")
+    @DeleteMapping("employer/job/delete/{jobId}")
     public String deleteJob(@PathVariable Long jobId){
         jobListingService.deleteJob(jobId);
-        return "Success";
+        return "Deleted";
     }
 //delete all jobs
     @DeleteMapping("/jobs/deleteAll")
@@ -142,35 +171,24 @@ public class JobApplicationController {
         return ResponseEntity.status(HttpStatus.OK).body(resumes);
     }
 
-    // @GetMapping("/resumes/{jobSeekerId}")
-    // public ResponseEntity<List<Resume>> getResumeByUserId(@PathVariable Long jobSeekerId) {
-    //     List<Resume> resumes = resumeManagementService.getResumeById(jobSeekerId);
-    //     return ResponseEntity.status(HttpStatus.OK).body(resumes);
-    // }
-
-     @PostMapping("/post-resumes")
+     @PostMapping("/jobSeeker/post-resumes/{uname}")
     public ResponseEntity<Object> postResumes(
-            @ModelAttribute Resume resume,
-            @RequestParam("filePath") MultipartFile file
-    )throws HttpMessageNotReadableException {
+           @PathVariable String uname,
+           @RequestParam("file") MultipartFile file
+    ){
         try {
-            Resume postedResume = resumeManagementService.postResumes(file, resume);
+            Resume postedResume = resumeManagementService.postResumes(file, uname);
             return ResponseEntity.status(HttpStatus.CREATED).body(postedResume);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file");
         }
     }
 
-    // @DeleteMapping("/resumes/delete/{jobSeekerId}")
-    // public String deleteResumeById(@PathVariable Long jobSeekerId) {
-    //     resumeManagementService.deleteAllResumesByJobSeekerId(jobSeekerId);
-    //     return "resumes deleted";
-    // }
+    
 
-    @GetMapping("/application/{applicationId}")
+    @GetMapping({"/employer/job/view-application/{applicationId}","/jobSeeker/jobs-applied/job/{applicationId}"})
     public ResponseEntity<Object> getApplication(@PathVariable Long applicationId) throws Exception {
-        try {
-            JobApplicationEntity jobApplication = jobApplicationService.getApplication(applicationId);
+        try {JobApplicationEntity jobApplication = jobApplicationService.getApplication(applicationId);
     
             if (jobApplication != null) {
                 return ResponseEntity.status(HttpStatus.OK).body(jobApplication);
@@ -184,13 +202,20 @@ public class JobApplicationController {
     }
     
 
-    @GetMapping("/application/jobSeeker/{juname}")
-    public ResponseEntity<List<JobApplicationEntity>> getApplicationByJobSeekerId(@PathVariable String juname)throws Exception{
+    @GetMapping("/jobSeeker/jobs-applied/{juname}")
+    public ResponseEntity<List<JobApplicationEntity>> getApplicationByJobSeekerJuname(@PathVariable String 
+    juname)throws Exception{
         List<JobApplicationEntity> applications = jobApplicationService.getApplicationByJuname(juname);
         return ResponseEntity.status(HttpStatus.OK).body(applications);
     }
 
-    @PostMapping("/apply")
+    @GetMapping("/employer/job/view-application/{jobId}")
+    public ResponseEntity<List<JobApplicationEntity>> getApplicationByJobId(@PathVariable Long jobId){
+        List<JobApplicationEntity> applications = jobApplicationService.getApplicationByJobId(jobId);
+        return ResponseEntity.status(HttpStatus.OK).body(applications);
+    }
+
+    @PostMapping("/jobSeeker/job/apply")
     public ResponseEntity<Object> applyForJob(@RequestBody JobApplicationEntity request) {
         try {
             jobApplicationService.applyForJob(request.getJobSeeker(), request.getJobList());

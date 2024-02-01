@@ -15,18 +15,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleEmptyListException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something went wrong"+ex);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something went wrong. "+ex.getMessage());
     }
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Enter all the columns to register");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Enter all the columns to register. "+ex.getMessage());
     }
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Enter Username"+ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Enter Username. "+ex.getMessage());
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Enter valid details"+ex);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Enter valid details. "+ex.getMessage());
     }
 }

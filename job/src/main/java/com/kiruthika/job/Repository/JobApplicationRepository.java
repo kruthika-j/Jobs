@@ -14,4 +14,6 @@ import com.kiruthika.job.Entity.JobSeeker;
 public interface JobApplicationRepository extends JpaRepository<JobApplicationEntity, Long> {
     List<JobApplicationEntity> findByJobSeeker(JobSeeker jobSeeker);
     boolean existsByJobSeekerAndJobList(JobSeeker jobSeeker,JobList jobList);
+    List<JobApplicationEntity> findByJobList(JobList jobList);
+
 }

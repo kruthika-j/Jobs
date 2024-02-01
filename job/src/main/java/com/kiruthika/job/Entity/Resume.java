@@ -9,8 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "resume_management")
@@ -23,26 +23,29 @@ public class Resume {
     @JoinColumn(name = "juname",nullable = false)
     private JobSeeker juname;
 
-    @Column(name = "filePath", columnDefinition = "BLOB")
-    private byte[] filePath;
+    @Column(name = "file", columnDefinition = "BLOB")
+    private byte[] file;
 
-    @Pattern(regexp = "^[0-3]{1}[0-9]{1}[.-/][0-1]{1}[0-9]{1}[.-/][19|20][0-9]{3}")
+    @PrePersist
+    private void onCreate() {
+        this.updationDate = new java.sql.Date(System.currentTimeMillis());
+    }
     private Date updationDate;
     
-    public Resume(Long resumeId, JobSeeker juname, byte[] filePath, Date updationDate) {
+    public Resume(Long resumeId, JobSeeker juname, byte[] file, Date updationDate) {
         this.resumeId = resumeId;
         this.juname = juname;
-        this.filePath = filePath;
+        this.file = file;
         this.updationDate = updationDate;
     }
     public Resume() {
     }
     
-    public byte[] getFilePath() {
-        return filePath;
+    public byte[] getFile() {
+        return file;
     }
-    public void setFilePath(byte[] filePath) {
-        this.filePath = filePath;
+    public void setFile(byte[] file) {
+        this.file = file;
     }
     public Date getUpdationDate() {
         return updationDate;

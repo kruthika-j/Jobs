@@ -9,11 +9,9 @@ import org.springframework.stereotype.Service;
 import com.kiruthika.job.Entity.JobApplicationEntity;
 import com.kiruthika.job.Entity.JobList;
 import com.kiruthika.job.Entity.JobSeeker;
-import com.kiruthika.job.Entity.UserData;
 import com.kiruthika.job.Repository.JobApplicationRepository;
 import com.kiruthika.job.Repository.JobListRepository;
 import com.kiruthika.job.Repository.JobSeekerRepository;
-import com.kiruthika.job.Repository.UserDataRepository;
 
 @Service
 public class JobApplicationService {
@@ -32,6 +30,11 @@ public class JobApplicationService {
             return jobApplicationRepository.findByJobSeeker(data);
         }
 
+        public List<JobApplicationEntity> getApplicationByJobId(Long jobId){
+            JobList data = jobListRepository.findByJobId(jobId);
+            return jobApplicationRepository.findByJobList(data);
+        }
+
         public void applyForJob(JobSeeker jobSeeker, JobList jobList) throws Exception {
             if (jobApplicationRepository.existsByJobSeekerAndJobList(jobSeeker, jobList)) {
                 throw new RuntimeException("JobSeeker has already applied for this job");
@@ -40,7 +43,7 @@ public class JobApplicationService {
             jobApplicationEntity.setJobSeeker(jobSeeker);
             jobApplicationEntity.setJobList(jobList);
             jobApplicationRepository.save(jobApplicationEntity);
-        }
+        }   
     }
     
 

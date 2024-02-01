@@ -20,27 +20,21 @@ public class JobList {
 
     private String title;
     @ManyToOne
-    @JoinColumn(name = "uname", nullable = false)
+    @JoinColumn(name = "uname",referencedColumnName = "uname", nullable = false)
     private Employer uname;
     private String Description;
     private String Requirements;
-
-    @Pattern(regexp = "^[0-3]{1}[0-9]{1}[.-/][0-1]{1}[0-9]{1}[.-/][19|20][0-9]{3}")
     private Date Deadline;
-    
-    @Pattern(regexp = "^[0-3]{1}[0-9]{1}[.-/][0-1]{1}[0-9]{1}[.-/][19|20][0-9]{3}")
     private Date PostedDate;
-    private String Category;
+    private String category;
     private String Location;
     
-    
-
     public String getCategory() {
-        return Category;
+        return category;
     }
 
     public void setCategory(String category) {
-        Category = category;
+        this.category = category;
     }
 
     public String getLocation() {
@@ -96,7 +90,7 @@ public class JobList {
 
   
     public JobList(Long jobId, String title, Employer uname, String description, String requirements,
-            Date deadline, Date postedDate,String Category,String Location) {
+            Date deadline, Date postedDate,String category,String Location) {
         this.jobId = jobId;
         this.title = title;
         this.uname = uname;
@@ -104,7 +98,7 @@ public class JobList {
         Requirements = requirements;
         Deadline = deadline;
         PostedDate = postedDate;
-        this.Category = Category;
+        this.category = category;
         this.Location = Location;
     }
 

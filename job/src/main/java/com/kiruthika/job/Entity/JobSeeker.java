@@ -24,11 +24,10 @@ public class JobSeeker {
     private String email;
     private String Name;
 
-    @Pattern(regexp ="^[6-9]\\d{10}",
+    @Pattern(regexp ="^[6-9]\\d{9}",
             message = "enter valid contact number")
     private String Contact;
 
-    @Pattern(regexp = "^[0-3]{1}[0-9]{1}[.-/][0-1]{1}[0-9]{1}[.-/][19|20][0-9]{3}")
     private Date DOB;
     private String Qualification;
     private String Location;
