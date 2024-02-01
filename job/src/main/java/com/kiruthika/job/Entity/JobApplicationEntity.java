@@ -3,6 +3,7 @@ package com.kiruthika.job.Entity;
 import java.sql.Date;
 import java.sql.Time;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,10 @@ public class JobApplicationEntity {
     @ManyToOne 
     @JoinColumn(name = "jobList",nullable = false)
     private JobList jobList;
+
+    @Column(name = "file", columnDefinition = "BLOB")
+    private byte[] file;
+
 
     private Date applicationDate;
     private Time applicationTime;
@@ -58,12 +63,7 @@ public class JobApplicationEntity {
     }
     public JobApplicationEntity() {
     }
-    public JobApplicationEntity(Long applicationId, JobSeeker jobSeeker, JobList jobList, Date applicationDate) {
-        this.applicationId = applicationId;
-        this.jobSeeker = jobSeeker;
-        this.jobList = jobList;
-        this.applicationDate = applicationDate;
-    }
+    
     public Time getApplicationTime() {
         return applicationTime;
     }
@@ -75,6 +75,27 @@ public class JobApplicationEntity {
     }
     public void setJobSeeker(JobSeeker jobSeeker) {
         this.jobSeeker = jobSeeker;
+    }
+
+
+    public byte[] getFile() {
+        return file;
+    }
+
+
+    public void setFile(byte[] file) {
+        this.file = file;
+    }
+
+
+    public JobApplicationEntity(Long applicationId, JobSeeker jobSeeker, JobList jobList, byte[] file,
+            Date applicationDate, Time applicationTime) {
+        this.applicationId = applicationId;
+        this.jobSeeker = jobSeeker;
+        this.jobList = jobList;
+        this.file = file;
+        this.applicationDate = applicationDate;
+        this.applicationTime = applicationTime;
     }
 
    

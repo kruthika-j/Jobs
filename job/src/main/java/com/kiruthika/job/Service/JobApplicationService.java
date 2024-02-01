@@ -1,7 +1,6 @@
 package com.kiruthika.job.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,9 +8,11 @@ import org.springframework.stereotype.Service;
 import com.kiruthika.job.Entity.JobApplicationEntity;
 import com.kiruthika.job.Entity.JobList;
 import com.kiruthika.job.Entity.JobSeeker;
+import com.kiruthika.job.Entity.Resume;
 import com.kiruthika.job.Repository.JobApplicationRepository;
 import com.kiruthika.job.Repository.JobListRepository;
 import com.kiruthika.job.Repository.JobSeekerRepository;
+import com.kiruthika.job.Repository.ResumeRepository;
 
 @Service
 public class JobApplicationService {
@@ -21,6 +22,9 @@ public class JobApplicationService {
     private JobSeekerRepository jobSeekerRepository;
     @Autowired
     private JobListRepository jobListRepository;
+
+    @Autowired
+    private ResumeRepository resumeRepository;
     
       public JobApplicationEntity getApplication(Long applicationId) {
             return jobApplicationRepository.findById(applicationId).orElse(null);
@@ -40,10 +44,11 @@ public class JobApplicationService {
                 throw new RuntimeException("JobSeeker has already applied for this job");
             }
             JobApplicationEntity jobApplicationEntity =  new JobApplicationEntity();
+            Resume resume = resumeRepository.findByJuname(jobSeeker);
+            jobApplicationEntity.setFile(resume.getFile());
             jobApplicationEntity.setJobSeeker(jobSeeker);
             jobApplicationEntity.setJobList(jobList);
-            jobApplicationRepository.save(jobApplicationEntity);
-        }   
-    }
-    
 
+            jobApplicationRepository.save(jobApplicationEntity);
+        }
+    }

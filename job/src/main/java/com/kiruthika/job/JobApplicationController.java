@@ -184,9 +184,8 @@ public class JobApplicationController {
         }
     }
 
-    
-
-    @GetMapping({"/employer/job/view-application/{applicationId}","/jobSeeker/jobs-applied/job/{applicationId}"})
+  
+    @GetMapping("/employer/job/view-application/{applicationId}")
     public ResponseEntity<Object> getApplication(@PathVariable Long applicationId) throws Exception {
         try {JobApplicationEntity jobApplication = jobApplicationService.getApplication(applicationId);
     
@@ -209,7 +208,7 @@ public class JobApplicationController {
         return ResponseEntity.status(HttpStatus.OK).body(applications);
     }
 
-    @GetMapping("/employer/job/view-application/{jobId}")
+    @GetMapping("/employer/job/view-application/by-job-id/{jobId}")
     public ResponseEntity<List<JobApplicationEntity>> getApplicationByJobId(@PathVariable Long jobId){
         List<JobApplicationEntity> applications = jobApplicationService.getApplicationByJobId(jobId);
         return ResponseEntity.status(HttpStatus.OK).body(applications);
@@ -224,5 +223,4 @@ public class JobApplicationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error applying for the job: " + e.getMessage());
         }
     }
-    
 }
