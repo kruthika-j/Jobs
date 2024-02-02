@@ -15,4 +15,7 @@ public interface ResumeRepository extends JpaRepository<Resume, Long> {
     // @Transactional
     // void deleteByjobSeekerId(UserData jobSeekerId);
     Resume findByJuname(JobSeeker juname);
+    
+    @Transactional
+    void deleteByJuname(JobSeeker juname);
 }

@@ -10,13 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
@@ -171,7 +169,7 @@ public class JobApplicationController {
         return ResponseEntity.status(HttpStatus.OK).body(resumes);
     }
 
-     @PostMapping("/jobSeeker/post-resumes/{uname}")
+     @PostMapping("/jobSeeker/profile/post-resumes/{uname}")
     public ResponseEntity<Object> postResumes(
            @PathVariable String uname,
            @RequestParam("file") MultipartFile file
@@ -184,6 +182,11 @@ public class JobApplicationController {
         }
     }
 
+    @DeleteMapping("/resume/delete/{juname}")
+    public String deleteResume(@PathVariable String juname){
+        resumeManagementService.deleteResume(juname);
+        return "Resume Deleted";
+    }
   
     @GetMapping("/employer/job/view-application/{applicationId}")
     public ResponseEntity<Object> getApplication(@PathVariable Long applicationId) throws Exception {

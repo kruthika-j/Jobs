@@ -2,11 +2,14 @@ package com.kiruthika.job.Entity;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
 
+@JsonIgnoreProperties(value = { "password" })
 @Entity
 @Table(name = "jobseeker")
 public class JobSeeker {

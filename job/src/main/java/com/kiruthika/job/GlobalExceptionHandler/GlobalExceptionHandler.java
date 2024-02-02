@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleEmptyListException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something went wrong. "+ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something went wrong. "+ex);
     }
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
