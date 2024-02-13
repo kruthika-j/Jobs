@@ -1,7 +1,5 @@
 package com.kiruthika.job.Repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +13,8 @@ public interface ResumeRepository extends JpaRepository<Resume, Long> {
     // @Transactional
     // void deleteByjobSeekerId(UserData jobSeekerId);
     Resume findByJuname(JobSeeker juname);
-    
+    boolean existsByJuname(JobSeeker juname);
+
     @Transactional
     void deleteByJuname(JobSeeker juname);
 }

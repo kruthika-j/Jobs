@@ -17,7 +17,7 @@ public class JobSeekerService {
             return jobSeekerRepository.save(jobSeeker);
         }
        else {
-           throw new RuntimeException("User with ID " + jobSeeker.getJuname() + " already exist");
+           throw new RuntimeException("User " + jobSeeker.getJuname() + " already exist");
        }
     }
 
@@ -29,7 +29,7 @@ public class JobSeekerService {
         if (jobSeekerRepository.existsById(juname)) {
             jobSeekerRepository.deleteById(juname);
         } else {
-            throw new RuntimeException("User with ID " + juname + " not found");
+            throw new RuntimeException("User " + juname + " not found");
         }
     }
 }

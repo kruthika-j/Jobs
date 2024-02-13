@@ -24,7 +24,12 @@ public class JobListingService {
     }
 
     public JobList postJobs(JobList jobList)throws Exception {
+        if (!jobListRepository.existsById(jobList.getJobId())) {
             return jobListRepository.save(jobList);
+       }
+       else {
+           throw new RuntimeException(" Job " + " already posted");
+       }
     }
 
     public List<JobList> getJobs(String uname) {

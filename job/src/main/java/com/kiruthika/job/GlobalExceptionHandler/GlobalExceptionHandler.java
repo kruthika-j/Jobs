@@ -14,7 +14,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleEmptyListException(Exception ex) {
+    public ResponseEntity<Object> Exception(Exception ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something went wrong. "+ex);
     }
     @ExceptionHandler(HttpMessageNotReadableException.class)

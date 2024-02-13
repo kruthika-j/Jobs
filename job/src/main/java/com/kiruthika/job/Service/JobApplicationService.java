@@ -1,5 +1,6 @@
 package com.kiruthika.job.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,22 @@ public class JobApplicationService {
         }
         public List<JobApplicationEntity> getApplicationByJuname(String juname) {
             JobSeeker data = jobSeekerRepository.findByjuname(juname);
-            return jobApplicationRepository.findByJobSeeker(data);
+            if(jobApplicationRepository.existsByJobSeeker(data)){
+                return jobApplicationRepository.findByJobSeeker(data);
+            }
+            else{
+                throw new RuntimeException("Application not found"); 
+            }
         }
 
         public List<JobApplicationEntity> getApplicationByJobId(Long jobId){
             JobList data = jobListRepository.findByJobId(jobId);
-            return jobApplicationRepository.findByJobList(data);
+            if(jobApplicationRepository.existsByJobList(data)){
+                return jobApplicationRepository.findByJobList(data);
+            }
+            else{
+                throw new RuntimeException("Application not found"); 
+            }
         }
 
         public void applyForJob(JobSeeker jobSeeker, JobList jobList) throws Exception {
@@ -48,6 +59,7 @@ public class JobApplicationService {
             jobApplicationEntity.setFile(resume.getFile());
             jobApplicationEntity.setJobSeeker(jobSeeker);
             jobApplicationEntity.setJobList(jobList);
+            jobApplicationEntity.setAppliedAt(LocalDateTime.now());
 
             jobApplicationRepository.save(jobApplicationEntity);
         }

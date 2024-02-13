@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -29,7 +30,6 @@ import com.kiruthika.job.Service.JobApplicationService;
 import com.kiruthika.job.Service.JobListingService;
 import com.kiruthika.job.Service.JobSeekerService;
 import com.kiruthika.job.Service.ResumeService;
-// import com.kiruthika.job.Exception.EmptyListException;
 
 import jakarta.validation.Valid;
 
@@ -163,26 +163,31 @@ public class JobApplicationController {
         return "All jobs deleted";
     }
 //get all resumes
-    @GetMapping("/resumes")
+    @GetMapping("jobSeeker/profile/resumes")
     public ResponseEntity<List<Resume>> getAllResumes() {
         List<Resume> resumes = resumeManagementService.getAllResumes();
         return ResponseEntity.status(HttpStatus.OK).body(resumes);
     }
 
-     @PostMapping("/jobSeeker/profile/post-resumes/{uname}")
+    @PostMapping("/jobSeeker/profile/post-resumes/{uname}")
     public ResponseEntity<Object> postResumes(
            @PathVariable String uname,
            @RequestParam("file") MultipartFile file
     ){
         try {
-            Resume postedResume = resumeManagementService.postResumes(file, uname);
-            return ResponseEntity.status(HttpStatus.CREATED).body(postedResume);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file");
+            resumeManagementService.postResumes(file, uname);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Resume Uploaded Successfully!");
+        }
+        catch (MultipartException e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to parse multipart request!");
+        }
+        catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file!");
         }
     }
 
-    @DeleteMapping("/resume/delete/{juname}")
+    @DeleteMapping("jobSeeker/profile/resume/delete/{juname}")
     public String deleteResume(@PathVariable String juname){
         resumeManagementService.deleteResume(juname);
         return "Resume Deleted";
@@ -199,7 +204,7 @@ public class JobApplicationController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving JobApplication");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving JobApplication!");
         }
     }
     
@@ -221,7 +226,7 @@ public class JobApplicationController {
     public ResponseEntity<Object> applyForJob(@RequestBody JobApplicationEntity request) {
         try {
             jobApplicationService.applyForJob(request.getJobSeeker(), request.getJobList());
-            return ResponseEntity.status(HttpStatus.CREATED).body("Job application submitted successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Job application submitted successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error applying for the job: " + e.getMessage());
         }

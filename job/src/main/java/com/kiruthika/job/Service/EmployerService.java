@@ -16,7 +16,7 @@ public class EmployerService {
              employerRepository.save(employer);
         }
         else {
-            throw new RuntimeException("User with ID " + employer.getUname() + " already exist");
+            throw new RuntimeException("User " + employer.getUname() + " already exist");
         }
     }
 
@@ -25,7 +25,7 @@ public class EmployerService {
             return employerRepository.findByUname(uname);
         } 
         else {
-            throw new RuntimeException("User with ID " + uname + " not found");
+            throw new RuntimeException("User " + uname + " not found");
         }
     }
 
@@ -34,7 +34,7 @@ public class EmployerService {
             employerRepository.deleteById(uname);
          } 
        else {
-            throw new RuntimeException("User with ID " + uname + " not found");
+            throw new RuntimeException("User " + uname + " not found");
         }
     }
 }

@@ -65,6 +65,5 @@ public class Resume {
     }
     public void setJuname(JobSeeker juname) {
         this.juname = juname;
-    }
-    
+    } 
 }

@@ -29,7 +29,13 @@ public class ResumeService {
 
     public void deleteResume(String juname){
         JobSeeker jobSeeker = jobSeekerRepository.findByjuname(juname);
-        resumeManagementRepository.deleteByJuname(jobSeeker);
+        if(!resumeManagementRepository.existsByJuname(jobSeeker))
+        {
+            throw new RuntimeException("Resume not found");
+        }
+        else{
+            resumeManagementRepository.deleteByJuname(jobSeeker);
+        }
     }
 
     public Resume postResumes(MultipartFile file, String uname) throws IOException {
@@ -50,7 +56,4 @@ public class ResumeService {
             throw new RuntimeException("Error posting resumes", e);
         }
     }
-
-   
-
 }

@@ -8,4 +8,4 @@ import com.kiruthika.job.Entity.Employer;
 @Repository
 public interface EmployerRepository extends JpaRepository<Employer,String> {
     Employer findByUname(String Uname);
-} 
+}
