@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,7 +72,7 @@ public class JobApplicationController {
        return ResponseEntity.status(HttpStatus.OK).body(employer);
    }
 //jobseeker details
-   @GetMapping("/jobseeker/profile/{juname}")
+   @GetMapping("/jobSeeker/profile/{juname}")
    public ResponseEntity<Object> getjobSeeker(@PathVariable String juname) throws NoResourceFoundException {
         JobSeeker jobSeeker = jobSeekerService.getJobSeeker(juname);
         return ResponseEntity.status(HttpStatus.OK).body(jobSeeker);
@@ -88,7 +89,7 @@ public class JobApplicationController {
         }
     }
 //delete jobseeker by juname
-    @DeleteMapping("/jobseeker/delete/{juname}")
+    @DeleteMapping("/jobSeeker/delete/{juname}")
     public String deleteJobSeeker(@PathVariable String juname)throws NoResourceFoundException {
             jobSeekerService.deleteJobSeeker(juname);
             return "User Deleted";

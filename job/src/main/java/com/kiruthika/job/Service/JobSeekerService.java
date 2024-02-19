@@ -1,35 +1,42 @@
 package com.kiruthika.job.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import java.util.function.Supplier;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 
 import com.kiruthika.job.Entity.JobSeeker;
 import com.kiruthika.job.Repository.JobSeekerRepository;
 
 @Service
-public class JobSeekerService {
-    
+public class JobSeekerService{
+
     @Autowired
     private JobSeekerRepository jobSeekerRepository;
 
-    public JobSeeker createJobSeeker(JobSeeker jobSeeker){
+    public JobSeeker createJobSeeker(JobSeeker jobSeeker) {
         if (!jobSeekerRepository.existsById(jobSeeker.getJuname())) {
             return jobSeekerRepository.save(jobSeeker);
+        } else {
+            throw new RuntimeException("User " + jobSeeker.getJuname() + " already exist");
         }
-       else {
-           throw new RuntimeException("User " + jobSeeker.getJuname() + " already exist");
-       }
     }
 
-    public JobSeeker getJobSeeker(String juname){
+    public JobSeeker getJobSeeker(String juname) {
         return jobSeekerRepository.findByjuname(juname);
     }
 
-    public void deleteJobSeeker(String juname){
+    public void deleteJobSeeker(String juname) {
         if (jobSeekerRepository.existsById(juname)) {
             jobSeekerRepository.deleteById(juname);
         } else {
             throw new RuntimeException("User " + juname + " not found");
         }
     }
+
+   
 }
