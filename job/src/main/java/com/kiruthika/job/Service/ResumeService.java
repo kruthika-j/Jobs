@@ -23,8 +23,9 @@ public class ResumeService {
     private JobSeekerRepository jobSeekerRepository;
 
 
-    public List<Resume> getAllResumes() {
-        return resumeManagementRepository.findAll();
+    public Resume getResumes(String juname) {
+        JobSeeker jobSeeker=jobSeekerRepository.findByjuname(juname);
+        return resumeManagementRepository.findByJuname(jobSeeker);
     }
 
     public void deleteResume(String juname){

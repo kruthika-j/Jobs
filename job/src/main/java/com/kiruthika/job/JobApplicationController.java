@@ -164,9 +164,9 @@ public class JobApplicationController {
         return "All jobs deleted";
     }
 //get all resumes
-    @GetMapping("jobSeeker/profile/resumes")
-    public ResponseEntity<List<Resume>> getAllResumes() {
-        List<Resume> resumes = resumeManagementService.getAllResumes();
+    @GetMapping("jobSeeker/profile/resumes/{juname}")
+    public ResponseEntity<Resume> getResume(@PathVariable("juname") String juname) {
+        Resume resumes = resumeManagementService.getResumes(juname);
         return ResponseEntity.status(HttpStatus.OK).body(resumes);
     }
 

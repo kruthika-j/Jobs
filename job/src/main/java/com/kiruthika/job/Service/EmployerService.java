@@ -7,7 +7,7 @@ import com.kiruthika.job.Entity.Employer;
 import com.kiruthika.job.Repository.EmployerRepository;
 
 @Service
-public class EmployerService {
+public class EmployerService{
     @Autowired
     private EmployerRepository employerRepository;
 
@@ -37,4 +37,6 @@ public class EmployerService {
             throw new RuntimeException("User " + uname + " not found");
         }
     }
+
+      
 }

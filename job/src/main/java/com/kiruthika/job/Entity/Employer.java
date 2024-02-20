@@ -22,10 +22,8 @@ import jakarta.validation.constraints.Pattern;
 // @JsonIgnoreProperties(value = { "password" })
 @Entity
 @Table(name = "employer")
-public class Employer implements UserDetailsService {
+public class Employer{
 
-    @Autowired
-    private EmployerRepository employerRepository;
    
     @Id
     @NotNull(message = "enter username")
@@ -126,18 +124,7 @@ public class Employer implements UserDetailsService {
  
     
        
-        @Override
-        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-          
-
-            Employer employer = Optional.ofNullable(employerRepository.findByUname(username))
-                    .orElseThrow(() -> new UsernameNotFoundException("Employer not found with username: " + username));
-    
-            return User.builder()
-                    .username(employer.getUname())
-                    .password(employer.getPassword())
-                    .build();
-        }
+     
     }
     
 
