@@ -106,9 +106,4 @@ public class JobSeeker {
         this.Qualification = qualification;
         this.Location = location;
     }
-
-    public JobSeeker orElseThrow() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
-    }
 }

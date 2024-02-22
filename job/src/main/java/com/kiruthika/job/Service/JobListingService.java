@@ -54,9 +54,7 @@ public class JobListingService {
         }
     }
 
-    public void deleteAllJobs(){
-        jobListRepository.deleteAll();
-    }
+  
       
     public JobList editJob(Long jobId, JobList updatedJob) {
         JobList existingJob = jobListRepository.findById(jobId).get();

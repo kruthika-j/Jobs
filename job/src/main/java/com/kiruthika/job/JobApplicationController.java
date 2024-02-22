@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +49,6 @@ public class JobApplicationController {
         this.jobApplicationService = jobApplicationService;
         this.employerService = employerService;
         this.jobSeekerService = jobSeekerService;
-
     }
 //Employer signup
    @PostMapping("/register/employer")
@@ -157,12 +155,7 @@ public class JobApplicationController {
         jobListingService.deleteJob(jobId);
         return "Deleted";
     }
-//delete all jobs
-    @DeleteMapping("/jobs/deleteAll")
-    public String deleteAllJobs() {
-        jobListingService.deleteAllJobs();
-        return "All jobs deleted";
-    }
+
 //get all resumes
     @GetMapping("jobSeeker/profile/resumes/{juname}")
     public ResponseEntity<Resume> getResume(@PathVariable("juname") String juname) {

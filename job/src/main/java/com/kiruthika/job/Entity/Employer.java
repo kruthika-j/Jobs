@@ -1,17 +1,5 @@
 package com.kiruthika.job.Entity;
 
-
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-
-import com.kiruthika.job.Repository.EmployerRepository;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -19,12 +7,10 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-// @JsonIgnoreProperties(value = { "password" })
 @Entity
 @Table(name = "employer")
 public class Employer{
 
-   
     @Id
     @NotNull(message = "enter username")
     @Pattern(regexp = "^[a-z|A-Z|0-9|[@#$%^-_*]]{6,50}$", message = "username must be of 6 to 50 length with no special characters")
@@ -119,13 +105,8 @@ public class Employer{
         this.Contact = contact;
         this.Location = location;
         this.Website = website;
-
-    }
- 
-    
-       
-     
-    }
+    } 
+}
     
 
 

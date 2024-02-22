@@ -6,8 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.List;
-
 import com.kiruthika.job.Entity.JobSeeker;
 import com.kiruthika.job.Entity.Resume;
 import com.kiruthika.job.Repository.JobSeekerRepository;

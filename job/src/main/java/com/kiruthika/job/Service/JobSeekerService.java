@@ -1,14 +1,7 @@
 package com.kiruthika.job.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import java.util.function.Supplier;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-
 import com.kiruthika.job.Entity.JobSeeker;
 import com.kiruthika.job.Repository.JobSeekerRepository;
 

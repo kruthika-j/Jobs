@@ -86,17 +86,16 @@ public class JobList {
 
     public JobList() {
     }
-
   
     public JobList(Long jobId, String title, Employer uname, String description, String requirements,
             Date deadline, Date postedDate,String category,String Location) {
         this.jobId = jobId;
         this.title = title;
         this.uname = uname;
-        Description = description;
-        Requirements = requirements;
-        Deadline = deadline;
-        PostedDate = postedDate;
+        this.Description = description;
+        this.Requirements = requirements;
+        this.Deadline = deadline;
+        this.PostedDate = postedDate;
         this.category = category;
         this.Location = Location;
     }

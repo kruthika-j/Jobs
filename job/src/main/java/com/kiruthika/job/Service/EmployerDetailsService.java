@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.User;
 
 import com.kiruthika.job.Entity.Employer;
 import com.kiruthika.job.Entity.JobSeeker;
@@ -31,7 +32,7 @@ public class EmployerDetailsService implements UserDetailsService {
                 .orElse(null);
 
         if (employer != null) {
-            return org.springframework.security.core.userdetails.User.builder()
+            return User.builder()
                     .username(employer.getUname())
                     .password(employer.getPassword())
                     .passwordEncoder(passwordEncoder::encode)
@@ -42,7 +43,7 @@ public class EmployerDetailsService implements UserDetailsService {
         JobSeeker jobSeeker = Optional.ofNullable(jobSeekerRepository.findByjuname(username))
                 .orElseThrow(() -> new UsernameNotFoundException("JobSeeker not found with username: " + username));
 
-        return org.springframework.security.core.userdetails.User.builder()
+        return User.builder()
                 .username(jobSeeker.getJuname())
                 .password(jobSeeker.getPassword())
                 .passwordEncoder(passwordEncoder::encode)
