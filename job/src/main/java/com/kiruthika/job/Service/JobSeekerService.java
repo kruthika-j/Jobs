@@ -1,6 +1,7 @@
 package com.kiruthika.job.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.kiruthika.job.Entity.JobSeeker;
 import com.kiruthika.job.Repository.JobSeekerRepository;
@@ -11,9 +12,23 @@ public class JobSeekerService{
     @Autowired
     private JobSeekerRepository jobSeekerRepository;
 
+      @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     public JobSeeker createJobSeeker(JobSeeker jobSeeker) {
         if (!jobSeekerRepository.existsById(jobSeeker.getJuname())) {
-            return jobSeekerRepository.save(jobSeeker);
+            JobSeeker seeker = new JobSeeker();
+            seeker.setContact(jobSeeker.getContact());
+            seeker.setDOB(jobSeeker.getDOB());
+            seeker.setEmail(jobSeeker.getEmail());
+            seeker.setJuname(jobSeeker.getJuname());
+            seeker.setLocation(jobSeeker.getLocation());
+            seeker.setName(jobSeeker.getName());
+            seeker.setQualification(jobSeeker.getQualification());
+            seeker.setPassword(passwordEncoder.encode(jobSeeker.getPassword()));
+
+            return jobSeekerRepository.save(seeker);
         } else {
             throw new RuntimeException("User " + jobSeeker.getJuname() + " already exist");
         }

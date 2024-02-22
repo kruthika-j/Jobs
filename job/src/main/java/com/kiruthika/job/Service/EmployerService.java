@@ -14,10 +14,21 @@ public class EmployerService{
     @Autowired
     private EmployerRepository employerRepository;
 
-   
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     public void createEmployer(Employer employer){
         if (!employerRepository.existsById(employer.getUname())) {
-             employerRepository.save(employer);
+            Employer emp = new Employer();
+            emp.setCompanyId(employer.getCompanyId());
+            emp.setCompanyName(employer.getCompanyName());
+            emp.setContact(employer.getContact());
+            emp.setLocation(employer.getLocation());
+            emp.setUname(employer.getUname());
+            emp.setWebsite(employer.getWebsite());
+            emp.setPassword(passwordEncoder.encode(employer.getPassword()));
+            employerRepository.save(emp);
         }
         else {
             throw new RuntimeException("User " + employer.getUname() + " already exist");
