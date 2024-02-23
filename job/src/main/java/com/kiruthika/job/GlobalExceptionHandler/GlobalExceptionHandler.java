@@ -1,7 +1,5 @@
-// GlobalExceptionHandler.java
 package com.kiruthika.job.GlobalExceptionHandler;
 
-// import com.kiruthika.job.Exception.EmptyListException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;

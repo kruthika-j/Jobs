@@ -9,9 +9,6 @@ import com.kiruthika.job.Entity.Resume;
 
 @Repository
 public interface ResumeRepository extends JpaRepository<Resume, Long> {
-    // List<Resume> findByjobSeekerId(UserData jobSeekerId);
-    // @Transactional
-    // void deleteByjobSeekerId(UserData jobSeekerId);
     Resume findByJuname(JobSeeker juname);
     boolean existsByJuname(JobSeeker juname);
 
