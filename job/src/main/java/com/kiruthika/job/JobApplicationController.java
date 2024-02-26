@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,16 +21,22 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.security.authentication.AuthenticationManager; 
+import org.springframework.security.core.Authentication; 
+import org.springframework.security.authentication.AuthenticationManager; 
+
 
 import com.kiruthika.job.Entity.JobList;
 import com.kiruthika.job.Entity.JobSeeker;
 import com.kiruthika.job.Entity.Resume;
+import com.kiruthika.job.Entity.AuthRequest;
 import com.kiruthika.job.Entity.Employer;
 import com.kiruthika.job.Entity.JobApplicationEntity;
 import com.kiruthika.job.Service.EmployerService;
 import com.kiruthika.job.Service.JobApplicationService;
 import com.kiruthika.job.Service.JobListingService;
 import com.kiruthika.job.Service.JobSeekerService;
+import com.kiruthika.job.Service.JwtService;
 import com.kiruthika.job.Service.ResumeService;
 
 import jakarta.validation.Valid;
@@ -50,6 +58,13 @@ public class JobApplicationController {
         this.employerService = employerService;
         this.jobSeekerService = jobSeekerService;
     }
+
+    @Autowired
+	private AuthenticationManager authenticationManager; 
+
+	@Autowired
+	private JwtService jwtService; 
+
 //Employer signup
    @PostMapping("/register/employer")
    public ResponseEntity<Object> createEmployer(@Valid @RequestBody Employer employer)throws HttpMessageNotReadableException{
@@ -62,6 +77,18 @@ public class JobApplicationController {
        JobSeeker newJobSeeker = jobSeekerService.createJobSeeker(jobSeeker);
        return ResponseEntity.status(HttpStatus.CREATED).body(newJobSeeker);
    }
+
+   @PostMapping("/signIn/jobSeeker")
+  public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) { 
+
+    System.out.println("Authenticating user: " + authRequest.getUsername());
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())); 
+		if (authentication.isAuthenticated()) { 
+			return jwtService.generateToken(authRequest.getUsername()); 
+		} else { 
+			throw new UsernameNotFoundException("invalid user request !"); 
+		} 
+	} 
    
 //employer details
    @GetMapping("/employer/profile/{uname}")

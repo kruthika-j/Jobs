@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 
 import com.kiruthika.job.Entity.Employer;
@@ -20,7 +21,7 @@ import com.kiruthika.job.Repository.JobSeekerRepository;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
-public class EmployerDetailsService implements UserDetailsService {
+public class EmployerSeekerDetailsService implements UserDetailsService {
         @Autowired
         private EmployerRepository employerRepository;
 
@@ -32,17 +33,18 @@ public class EmployerDetailsService implements UserDetailsService {
 
         @Override
         public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                // HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
-                //                 .currentRequestAttributes()).getRequest();
-                // String url = request.getRequestURL().toString();
-                // if (url.contains("employer")) {
+                
+                HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                                .currentRequestAttributes()).getRequest();
+
+                String url = request.getRequestURL().toString();
+
+                if (url.contains("employer")) {
                         Employer employer = Optional.ofNullable(employerRepository.findByUname(username))
                                         .orElse(null);
 
-                        // if (url.contains(employer.getUname())) {
-                         if (employer!=null) {
-                         
-                                System.out.println(employer.getUname()+"======================"+username);
+                        if (employer != null) {
+
                                 return User.builder()
                                                 .username(employer.getUname())
                                                 .password(employer.getPassword())
@@ -50,18 +52,17 @@ public class EmployerDetailsService implements UserDetailsService {
                                                 .roles("EMPLOYER")
                                                 .build();
                         }
-                // } else if (url.contains("jobSeeker")) {
-                //         System.out.println(url+"===============seeker===================="+username);
+                } else if (url.contains("jobSeeker")) {
                         JobSeeker jobSeeker = Optional.ofNullable(jobSeekerRepository.findByjuname(username))
                                         .orElseThrow(() -> new UsernameNotFoundException(
                                                         "JobSeeker not found with username: " + username));
-                        // if (url.contains(jobSeeker.getJuname())) {
                         return User.builder()
                                         .username(jobSeeker.getJuname())
                                         .password(jobSeeker.getPassword())
                                         .passwordEncoder(passwordEncoder::encode)
                                         .roles("JOB_SEEKER")
                                         .build();
-                        }
-                
+                }
+                throw new UsernameNotFoundException("User not found with username: " + username);
+        }
 }

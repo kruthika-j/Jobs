@@ -6,7 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
 
-// @JsonIgnoreProperties(value = { "password" })
 @Entity
 @Table(name = "jobseeker")
 public class JobSeeker {
