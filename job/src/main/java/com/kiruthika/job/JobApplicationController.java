@@ -76,14 +76,29 @@ public class JobApplicationController {
     }
   
     //sign in
-    @PostMapping({ "/signIn/jobSeeker", "/signIn/employer" })
+    @PostMapping("/signIn/employer")
     public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
 
         // System.out.println("Authenticating user: " + authRequest.getUsername());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
+            String roles="EMPLOYER";
+            return jwtService.generateToken(authRequest.getUsername(), roles);
+        } else {
+            throw new UsernameNotFoundException("invalid user request !");
+        }
+    }
+
+    @PostMapping("/signIn/jobSeeker")
+    public String authenticatAndGetToken(@RequestBody AuthRequest authRequest) {
+
+        // System.out.println("Authenticating user: " + authRequest.getUsername());
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+        if (authentication.isAuthenticated()) {
+            String roles="JOB_SEEKER";
+            return jwtService.generateToken(authRequest.getUsername(), roles);
             
         } else {
             throw new UsernameNotFoundException("invalid user request !");
