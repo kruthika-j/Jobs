@@ -25,6 +25,7 @@ public class EmployerService{
             emp.setLocation(employer.getLocation());
             emp.setUname(employer.getUname());
             emp.setWebsite(employer.getWebsite());
+            emp.setDesignation(employer.getDesignation());
             emp.setPassword(passwordEncoder.encode(employer.getPassword()));
             employerRepository.save(emp);
         }

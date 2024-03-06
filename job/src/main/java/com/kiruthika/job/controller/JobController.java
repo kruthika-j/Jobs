@@ -38,6 +38,40 @@ public class JobController {
         }
     }
 
+    
+    @GetMapping("/jobSeeker/jobs/today")
+    public ResponseEntity<List<JobList>> getJobsPostedToday() {
+        List<JobList> jobsToday = jobListingService.getJobsPostedToday();
+
+        if (!jobsToday.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(jobsToday);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+    }
+
+    @GetMapping("/jobSeeker/jobs/this-week")
+    public ResponseEntity<List<JobList>> getJobsPostedThisWeek() {
+        List<JobList> jobsThisWeek = jobListingService.getJobsPostedThisWeek();
+
+        if (!jobsThisWeek.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(jobsThisWeek);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+    }
+
+    @GetMapping("/jobSeeker/jobs/this-month")
+    public ResponseEntity<List<JobList>> getJobsPostedThisMonth() {
+        List<JobList> jobsThisMonth = jobListingService.getJobsPostedThisMonth();
+
+        if (!jobsThisMonth.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(jobsThisMonth);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+    }
+
     // post jobs in employer login
     @PostMapping("/employer/post-job")
     public ResponseEntity<Object> postJobs(@RequestBody JobList joblist) throws HttpMessageNotReadableException {

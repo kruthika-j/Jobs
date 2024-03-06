@@ -1,5 +1,10 @@
 package com.kiruthika.job.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,10 +37,38 @@ public class JobListService {
         return activeJobs;
     }
 
+    public List<JobList> getJobsPostedToday() {
+       LocalDateTime startOfDay = LocalDateTime.now().with(LocalTime.MIN);
+    LocalDateTime endOfDay = LocalDateTime.now().with(LocalTime.MAX);
+
+    return jobListRepository.findByPostedDateBetween(startOfDay, endOfDay);
+}
+
+      public List<JobList> getJobsPostedThisWeek() {
+        LocalDateTime startOfWeek = LocalDateTime.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDateTime endOfWeek = startOfWeek.plusDays(6);
+        return jobListRepository.findByPostedDateBetween(startOfWeek, endOfWeek);
+    }
+
+    public List<JobList> getJobsPostedThisMonth() {
+        LocalDateTime startOfMonth = LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth());
+        LocalDateTime endOfMonth = startOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+        return jobListRepository.findByPostedDateBetween(startOfMonth, endOfMonth);
+    }
+
     public JobList postJobs(JobList jobList) throws Exception {
         if (!jobListRepository.existsById(jobList.getJobId())) {
-
-            return jobListRepository.save(jobList);
+            JobList job = new JobList();
+            job.setCategory(jobList.getCategory());
+            job.setDeadline(jobList.getDeadline());
+            job.setDescription(jobList.getDescription());
+            job.setJobId(jobList.getJobId());
+            job.setLocation(jobList.getLocation());
+            job.setRequirements(jobList.getRequirements());
+            job.setTitle(jobList.getTitle());
+            job.setUname(jobList.getUname());
+            job.setPostedDate(LocalDateTime.now());
+            return jobListRepository.save(job);
         } else {
             throw new RuntimeException(" Job " + " already posted");
         }

@@ -1,6 +1,8 @@
 package com.kiruthika.job.Entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +26,7 @@ public class JobList {
     private String Description;
     private String Requirements;
     private Date Deadline;
-    private Date PostedDate;
+    private LocalDateTime postedDate;
     private String category;
     private String Location;
     
@@ -88,14 +90,14 @@ public class JobList {
     }
   
     public JobList(Long jobId, String title, Employer uname, String description, String requirements,
-            Date deadline, Date postedDate,String category,String Location) {
+    Date deadline, LocalDateTime postedDate,String category,String Location) {
         this.jobId = jobId;
         this.title = title;
         this.uname = uname;
         this.Description = description;
         this.Requirements = requirements;
         this.Deadline = deadline;
-        this.PostedDate = postedDate;
+        this.postedDate = postedDate;
         this.category = category;
         this.Location = Location;
     }
@@ -108,11 +110,11 @@ public class JobList {
         this.jobId = jobId;
     }
 
-    public Date getPostedDate() {
-        return PostedDate;
+    public LocalDateTime getPostedDate() {
+        return postedDate;
     }
 
-    public void setPostedDate(Date postedDate) {
-        PostedDate = postedDate;
+    public void setPostedDate(LocalDateTime postedDate) {
+        this.postedDate = postedDate;
     }
 }

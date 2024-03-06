@@ -1,5 +1,7 @@
 package com.kiruthika.job.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +17,8 @@ public interface JobListRepository extends JpaRepository<JobList, Long> {
     List<JobList> findByTitle(String Title);
     List<JobList> findByCategory(String category);
     void deleteById(Long jobId);
+    List<JobList> findByPostedDate(LocalDateTime PostedDate);
+    List<JobList> findByPostedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    
 }

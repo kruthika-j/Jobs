@@ -1,25 +1,14 @@
-package com.kiruthika.job.Entity;
+package com.kiruthika.job.dto;
 
 import java.sql.Date;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
 
-@Entity
-@Table(name = "jobseeker")
-public class JobSeeker {
-    @Id
+public class JobSeekerDTO {
+     @Id
     @Pattern(regexp = "^[a-z|A-Z|0-9|[@#$%^-_*]]{6,50}$", message = "username must be of 6 to 50 length with no special characters")
     private String juname;
-
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\\-_*])([a-zA-Z0-9@#$%^&+=*.\\-_]){4,255}$", message = "enter valid password")
-    @JsonProperty(access = Access.WRITE_ONLY)
-    private String Password;
 
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "enter valid mail")
     private String email;
@@ -36,26 +25,6 @@ public class JobSeeker {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Date getDOB() {
-        return DOB;
-    }
-
-    public void setDOB(Date dOB) {
-        DOB = dOB;
-    }
-
-    public String getLocation() {
-        return Location;
-    }
-
-    public void setLocation(String location) {
-        Location = location;
-    }
-
     public String getJuname() {
         return juname;
     }
@@ -64,12 +33,8 @@ public class JobSeeker {
         this.juname = juname;
     }
 
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {
@@ -88,6 +53,14 @@ public class JobSeeker {
         Contact = contact;
     }
 
+    public Date getDOB() {
+        return DOB;
+    }
+
+    public void setDOB(Date dOB) {
+        DOB = dOB;
+    }
+
     public String getQualification() {
         return Qualification;
     }
@@ -96,13 +69,23 @@ public class JobSeeker {
         Qualification = qualification;
     }
 
-    public JobSeeker() {
+    public String getLocation() {
+        return Location;
     }
 
-    public JobSeeker(String juname, String password, String email, String name, String contact, Date dOB,
-            String qualification, String location) {
+    public void setLocation(String location) {
+        Location = location;
+    }
+
+    public JobSeekerDTO() {
+    }
+
+    public JobSeekerDTO(
+            @Pattern(regexp = "^[a-z|A-Z|0-9|[@#$%^-_*]]{6,50}$", message = "username must be of 6 to 50 length with no special characters") String juname,
+            @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "enter valid mail") String email,
+            String name, @Pattern(regexp = "^[6-9]\\d{9}", message = "enter valid contact number") String contact,
+            Date dOB, String qualification, String location) {
         this.juname = juname;
-        this.Password = password;
         this.email = email;
         this.Name = name;
         this.Contact = contact;
@@ -110,4 +93,5 @@ public class JobSeeker {
         this.Qualification = qualification;
         this.Location = location;
     }
+
 }

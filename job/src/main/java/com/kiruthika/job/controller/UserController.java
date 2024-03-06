@@ -21,6 +21,8 @@ import com.kiruthika.job.Entity.JobSeeker;
 import com.kiruthika.job.Service.EmployerService;
 import com.kiruthika.job.Service.JobSeekerService;
 import com.kiruthika.job.Service.JwtService;
+import com.kiruthika.job.dto.EmployerDTO;
+import com.kiruthika.job.dto.JobSeekerDTO;
 
 import jakarta.validation.Valid;
 
@@ -31,10 +33,8 @@ public class UserController {
     private EmployerService employerService;
     @Autowired
     private JobSeekerService jobSeekerService;
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private JwtService jwtService;
 
@@ -84,27 +84,59 @@ public class UserController {
         }
     }
 
-    // employer details
     @GetMapping("/employer/profile")
     public ResponseEntity<Object> getEmployer() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         String uname = authentication.getName();
-
         Employer employer = employerService.getEmployer(uname);
-        return ResponseEntity.status(HttpStatus.OK).body(employer);
+
+        if (employer != null) {
+            EmployerDTO employerDTO = convertToDTO(employer);
+            return ResponseEntity.status(HttpStatus.OK).body(employerDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employer not found");
+        }
     }
 
     // jobseeker details
     @GetMapping("/jobSeeker/profile")
     public ResponseEntity<Object> getjobSeeker() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         String juname = authentication.getName();
-        
         JobSeeker jobSeeker = jobSeekerService.getJobSeeker(juname);
-        return ResponseEntity.status(HttpStatus.OK).body(jobSeeker);
+
+        if (jobSeeker != null) {
+            JobSeekerDTO jobSeekerDTO = convertToDTO(jobSeeker);
+            return ResponseEntity.status(HttpStatus.OK).body(jobSeekerDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobSeeker not found");
+        }
     }
+
+    private EmployerDTO convertToDTO(Employer employer) {
+        return new EmployerDTO(
+                employer.getUname(),
+                employer.getCompanyId(),
+                employer.getCompanyName(),
+                employer.getContact(),
+                employer.getLocation(),
+                employer.getWebsite(),
+                employer.getDesignation()
+        );
+    }
+
+    private JobSeekerDTO convertToDTO(JobSeeker jobSeeker) {
+        return new JobSeekerDTO(
+                jobSeeker.getJuname(),
+                jobSeeker.getEmail(),
+                jobSeeker.getName(),
+                jobSeeker.getContact(),
+                jobSeeker.getDOB(),
+                jobSeeker.getQualification(),
+                jobSeeker.getLocation()
+        );
+    }
+    
 
     // delete employer by username
     @DeleteMapping("/employer/delete")
