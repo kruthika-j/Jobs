@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "job_application")
-public class JobApplicationEntity {
+public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long applicationId;
@@ -43,7 +43,7 @@ public class JobApplicationEntity {
     public void setJobList(JobList jobList) {
         this.jobList = jobList;
     }
-    public JobApplicationEntity() {
+    public Application() {
     }
     
     public JobSeeker getJobSeeker() {
@@ -64,12 +64,12 @@ public class JobApplicationEntity {
     public void setAppliedAt(LocalDateTime appliedAt) {
         AppliedAt = appliedAt;
     }
-    public JobApplicationEntity(Long applicationId, JobSeeker jobSeeker, JobList jobList, byte[] file,
+    public Application(Long applicationId, JobSeeker jobSeeker, JobList jobList, byte[] file,
             LocalDateTime appliedAt) {
         this.applicationId = applicationId;
         this.jobSeeker = jobSeeker;
         this.jobList = jobList;
         this.file = file;
-        AppliedAt = appliedAt;
+        this.AppliedAt = appliedAt;
     } 
 }

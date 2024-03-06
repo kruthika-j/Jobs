@@ -1,24 +1,25 @@
 package com.kiruthika.job.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kiruthika.job.Entity.JobApplicationEntity;
+import com.kiruthika.job.Entity.Application;
 import com.kiruthika.job.Entity.JobList;
 import com.kiruthika.job.Entity.JobSeeker;
 import com.kiruthika.job.Entity.Resume;
-import com.kiruthika.job.Repository.JobApplicationRepository;
+import com.kiruthika.job.Repository.ApplicationRepository;
 import com.kiruthika.job.Repository.JobListRepository;
 import com.kiruthika.job.Repository.JobSeekerRepository;
 import com.kiruthika.job.Repository.ResumeRepository;
 
 @Service
-public class JobApplicationService {
+public class ApplicationService {
     @Autowired 
-    private JobApplicationRepository jobApplicationRepository;
+    private ApplicationRepository ApplicationRepository;
     @Autowired
     private JobSeekerRepository jobSeekerRepository;
     @Autowired
@@ -27,23 +28,23 @@ public class JobApplicationService {
     @Autowired
     private ResumeRepository resumeRepository;
     
-      public JobApplicationEntity getApplication(Long applicationId) {
-            return jobApplicationRepository.findById(applicationId).orElse(null);
+      public Application getApplication(Long applicationId) {
+            return ApplicationRepository.findById(applicationId).orElse(null);
         }
-        public List<JobApplicationEntity> getApplicationByJuname(String juname) {
+        public List<Application> getApplicationByJuname(String juname) {
             JobSeeker data = jobSeekerRepository.findByjuname(juname);
-            if(jobApplicationRepository.existsByJobSeeker(data)){
-                return jobApplicationRepository.findByJobSeeker(data);
+            if(ApplicationRepository.existsByJobSeeker(data)){
+                return ApplicationRepository.findByJobSeeker(data);
             }
             else{
                 throw new RuntimeException("Application not found"); 
             }
         }
 
-        public List<JobApplicationEntity> getApplicationByJobId(Long jobId){
+        public List<Application> getApplicationByJobId(Long jobId){
             JobList data = jobListRepository.findByJobId(jobId);
-            if(jobApplicationRepository.existsByJobList(data)){
-                return jobApplicationRepository.findByJobList(data);
+            if(ApplicationRepository.existsByJobList(data)){
+                return ApplicationRepository.findByJobList(data);
             }
             else{
                 throw new RuntimeException("Application not found"); 
@@ -51,16 +52,20 @@ public class JobApplicationService {
         }
 
         public void applyForJob(JobSeeker jobSeeker, JobList jobList) throws Exception {
-            if (jobApplicationRepository.existsByJobSeekerAndJobList(jobSeeker, jobList)) {
+            if (ApplicationRepository.existsByJobSeekerAndJobList(jobSeeker, jobList)) {
                 throw new RuntimeException("JobSeeker has already applied for this job");
             }
-            JobApplicationEntity jobApplicationEntity =  new JobApplicationEntity();
+            Date currentDate = new Date();
+            if (currentDate.after(jobList.getDeadline())) {
+                throw new Exception("Application deadline has passed for this job.");
+            }
+            Application application =  new Application();
             Resume resume = resumeRepository.findByJuname(jobSeeker);
-            jobApplicationEntity.setFile(resume.getFile());
-            jobApplicationEntity.setJobSeeker(jobSeeker);
-            jobApplicationEntity.setJobList(jobList);
-            jobApplicationEntity.setAppliedAt(LocalDateTime.now());
+            application.setFile(resume.getFile());
+            application.setJobSeeker(jobSeeker);
+            application.setJobList(jobList);
+            application.setAppliedAt(LocalDateTime.now());
 
-            jobApplicationRepository.save(jobApplicationEntity);
+            ApplicationRepository.save(application);
         }
     }

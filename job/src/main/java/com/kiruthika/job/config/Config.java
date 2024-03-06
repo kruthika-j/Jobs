@@ -1,4 +1,4 @@
-package com.kiruthika.job;
+package com.kiruthika.job.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

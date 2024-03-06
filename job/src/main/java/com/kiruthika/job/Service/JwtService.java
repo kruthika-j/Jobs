@@ -7,7 +7,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +23,6 @@ public class JwtService {
 
 	public String generateToken(String userName, String roles) {
 		Map<String, Object> claims = new HashMap<>();
-		System.out.println("============" + userName);
 		return createToken(claims, userName, roles);
 	}
 

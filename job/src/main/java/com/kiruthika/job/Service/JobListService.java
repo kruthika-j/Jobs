@@ -1,6 +1,8 @@
 package com.kiruthika.job.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,7 @@ import com.kiruthika.job.Repository.EmployerRepository;
 import com.kiruthika.job.Repository.JobListRepository;
 
 @Service
-public class JobListingService {
+public class JobListService {
 
     @Autowired
     private JobListRepository jobListRepository;
@@ -20,16 +22,23 @@ public class JobListingService {
     private EmployerRepository employerRepository;
 
     public List<JobList> getAllJobs() {
-        return jobListRepository.findAll();
+        List<JobList> allJobs = jobListRepository.findAll();
+
+        Date currentDate = new Date();
+        List<JobList> activeJobs = allJobs.stream()
+                .filter(job -> job.getDeadline().after(currentDate))
+                .collect(Collectors.toList());
+
+        return activeJobs;
     }
 
-    public JobList postJobs(JobList jobList)throws Exception {
+    public JobList postJobs(JobList jobList) throws Exception {
         if (!jobListRepository.existsById(jobList.getJobId())) {
+
             return jobListRepository.save(jobList);
-       }
-       else {
-           throw new RuntimeException(" Job " + " already posted");
-       }
+        } else {
+            throw new RuntimeException(" Job " + " already posted");
+        }
     }
 
     public List<JobList> getJobs(String uname) {
@@ -37,25 +46,22 @@ public class JobListingService {
         return jobListRepository.findByUname(data);
     }
 
-   public List<JobList> getJobsByTitle(String title) {
+    public List<JobList> getJobsByTitle(String title) {
         return jobListRepository.findByTitle(title);
     }
 
-    public List<JobList> getJobsByCategory(String category){
+    public List<JobList> getJobsByCategory(String category) {
         return jobListRepository.findByCategory(category);
     }
 
     public void deleteJob(Long jobId) {
         if (jobListRepository.existsById(jobId)) {
             jobListRepository.deleteById(jobId);
-        } 
-       else {
+        } else {
             throw new RuntimeException("Job with ID " + jobId + " not found");
         }
     }
 
-  
-      
     public JobList editJob(Long jobId, JobList updatedJob) {
         JobList existingJob = jobListRepository.findById(jobId).get();
 
@@ -68,7 +74,7 @@ public class JobListingService {
             existingJob.setLocation(updatedJob.getLocation());
             return jobListRepository.save(existingJob);
         } else {
-            return null; 
+            return null;
         }
     }
 }
