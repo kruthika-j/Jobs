@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kiruthika.job.Entity.Category;
 import com.kiruthika.job.Entity.JobList;
 import com.kiruthika.job.Service.JobListService;
 
@@ -118,11 +119,17 @@ public class JobController {
 
     // display jobs by category
     @GetMapping("/jobSeeker/search/byCategory/{category}")
-    public ResponseEntity<List<JobList>> getJobsByCategory(@PathVariable("category") String category) {
-        List<JobList> joblist = jobListingService.getJobsByCategory(category);
+    public ResponseEntity<List<JobList>> getJobsByCategory(@PathVariable("category") String categoryName) {
+        List<JobList> joblist = jobListingService.getJobsByCategory(categoryName);
         return ResponseEntity.status(HttpStatus.OK).body(joblist);
     }
 
+    @GetMapping("/jobSeeker/search/byLocation/{location}")
+    public ResponseEntity<List<JobList>> getJobsByLocation(@PathVariable("location") String cityName) {
+        List<JobList> joblist = jobListingService.getJobsByLocation(cityName);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(joblist);
+    }
     // delete jobs by id
     @DeleteMapping("employer/job/delete/{jobId}")
     public String deleteJob(@PathVariable Long jobId) {

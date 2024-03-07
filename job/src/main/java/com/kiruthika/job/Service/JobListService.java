@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,10 +13,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kiruthika.job.Entity.Category;
 import com.kiruthika.job.Entity.Employer;
 import com.kiruthika.job.Entity.JobList;
+import com.kiruthika.job.Entity.Location;
+import com.kiruthika.job.Repository.CategoryRepository;
 import com.kiruthika.job.Repository.EmployerRepository;
 import com.kiruthika.job.Repository.JobListRepository;
+import com.kiruthika.job.Repository.LocationRepository;
 
 @Service
 public class JobListService {
@@ -25,6 +30,12 @@ public class JobListService {
 
     @Autowired
     private EmployerRepository employerRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private LocationRepository locationRepository;
 
     public List<JobList> getAllJobs() {
         List<JobList> allJobs = jobListRepository.findAll();
@@ -38,13 +49,13 @@ public class JobListService {
     }
 
     public List<JobList> getJobsPostedToday() {
-       LocalDateTime startOfDay = LocalDateTime.now().with(LocalTime.MIN);
-    LocalDateTime endOfDay = LocalDateTime.now().with(LocalTime.MAX);
+        LocalDateTime startOfDay = LocalDateTime.now().with(LocalTime.MIN);
+        LocalDateTime endOfDay = LocalDateTime.now().with(LocalTime.MAX);
 
-    return jobListRepository.findByPostedDateBetween(startOfDay, endOfDay);
-}
+        return jobListRepository.findByPostedDateBetween(startOfDay, endOfDay);
+    }
 
-      public List<JobList> getJobsPostedThisWeek() {
+    public List<JobList> getJobsPostedThisWeek() {
         LocalDateTime startOfWeek = LocalDateTime.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDateTime endOfWeek = startOfWeek.plusDays(6);
         return jobListRepository.findByPostedDateBetween(startOfWeek, endOfWeek);
@@ -83,8 +94,15 @@ public class JobListService {
         return jobListRepository.findByTitle(title);
     }
 
-    public List<JobList> getJobsByCategory(String category) {
+    public List<JobList> getJobsByCategory(String categoryName) {
+        Category category = categoryRepository.findByCategoryName(categoryName);
         return jobListRepository.findByCategory(category);
+            }
+
+    public List<JobList> getJobsByLocation(String stateName) {
+        Location location = locationRepository.findByStateName(stateName);
+        System.out.println(location+"=========================");
+        return jobListRepository.findByLocation(location);
     }
 
     public void deleteJob(Long jobId) {

@@ -21,8 +21,8 @@ import com.kiruthika.job.Entity.JobSeeker;
 import com.kiruthika.job.Service.EmployerService;
 import com.kiruthika.job.Service.JobSeekerService;
 import com.kiruthika.job.Service.JwtService;
-import com.kiruthika.job.dto.EmployerDTO;
-import com.kiruthika.job.dto.JobSeekerDTO;
+//import com.kiruthika.job.dto.EmployerDTO;
+//import com.kiruthika.job.dto.JobSeekerDTO;
 
 import jakarta.validation.Valid;
 
@@ -91,8 +91,8 @@ public class UserController {
         Employer employer = employerService.getEmployer(uname);
 
         if (employer != null) {
-            EmployerDTO employerDTO = convertToDTO(employer);
-            return ResponseEntity.status(HttpStatus.OK).body(employerDTO);
+            // EmployerDTO employerDTO = convertToDTO(employer);
+            return ResponseEntity.status(HttpStatus.OK).body(employer);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employer not found");
         }
@@ -106,36 +106,36 @@ public class UserController {
         JobSeeker jobSeeker = jobSeekerService.getJobSeeker(juname);
 
         if (jobSeeker != null) {
-            JobSeekerDTO jobSeekerDTO = convertToDTO(jobSeeker);
-            return ResponseEntity.status(HttpStatus.OK).body(jobSeekerDTO);
+            //JobSeekerDTO jobSeekerDTO = convertToDTO(jobSeeker);
+            return ResponseEntity.status(HttpStatus.OK).body(jobSeeker);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobSeeker not found");
         }
     }
 
-    private EmployerDTO convertToDTO(Employer employer) {
-        return new EmployerDTO(
-                employer.getUname(),
-                employer.getCompanyId(),
-                employer.getCompanyName(),
-                employer.getContact(),
-                employer.getLocation(),
-                employer.getWebsite(),
-                employer.getDesignation()
-        );
-    }
+    // private EmployerDTO convertToDTO(Employer employer) {
+    //     return new EmployerDTO(
+    //             employer.getUname(),
+    //             employer.getCompanyId(),
+    //             employer.getCompanyName(),
+    //             employer.getContact(),
+    //             employer.getLocation(),
+    //             employer.getWebsite(),
+    //             employer.getDesignation()
+    //     );
+    // }
 
-    private JobSeekerDTO convertToDTO(JobSeeker jobSeeker) {
-        return new JobSeekerDTO(
-                jobSeeker.getJuname(),
-                jobSeeker.getEmail(),
-                jobSeeker.getName(),
-                jobSeeker.getContact(),
-                jobSeeker.getDOB(),
-                jobSeeker.getQualification(),
-                jobSeeker.getLocation()
-        );
-    }
+    // private JobSeekerDTO convertToDTO(JobSeeker jobSeeker) {
+    //     return new JobSeekerDTO(
+    //             jobSeeker.getJuname(),
+    //             jobSeeker.getEmail(),
+    //             jobSeeker.getName(),
+    //             jobSeeker.getContact(),
+    //             jobSeeker.getDOB(),
+    //             jobSeeker.getQualification(),
+    //             jobSeeker.getLocation()
+    //     );
+    // }
     
 
     // delete employer by username

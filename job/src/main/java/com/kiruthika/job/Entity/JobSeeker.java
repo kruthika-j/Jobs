@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
@@ -17,9 +18,10 @@ public class JobSeeker {
     @Pattern(regexp = "^[a-z|A-Z|0-9|[@#$%^-_*]]{6,50}$", message = "username must be of 6 to 50 length with no special characters")
     private String juname;
 
+    @NotNull(message = "enter password")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\\-_*])([a-zA-Z0-9@#$%^&+=*.\\-_]){4,255}$", message = "enter valid password")
     @JsonProperty(access = Access.WRITE_ONLY)
-    private String Password;
+    private String password;
 
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "enter valid mail")
     private String email;
@@ -65,11 +67,11 @@ public class JobSeeker {
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public String getName() {
@@ -102,7 +104,7 @@ public class JobSeeker {
     public JobSeeker(String juname, String password, String email, String name, String contact, Date dOB,
             String qualification, String location) {
         this.juname = juname;
-        this.Password = password;
+        this.password = password;
         this.email = email;
         this.Name = name;
         this.Contact = contact;

@@ -1,9 +1,9 @@
 package com.kiruthika.job.Entity;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,24 +27,14 @@ public class JobList {
     private String Requirements;
     private Date Deadline;
     private LocalDateTime postedDate;
-    private String category;
-    private String Location;
-    
-    public String getCategory() {
-        return category;
-    }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "category_id", referencedColumnName = "categoryId", nullable = false)
+    private Category category;
 
-    public String getLocation() {
-        return Location;
-    }
-
-    public void setLocation(String location) {
-        Location = location;
-    }
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "location_id", referencedColumnName = "locationId", nullable = false)
+    private Location location;  
 
     public Employer getUname() {
         return uname;
@@ -89,18 +79,7 @@ public class JobList {
     public JobList() {
     }
   
-    public JobList(Long jobId, String title, Employer uname, String description, String requirements,
-    Date deadline, LocalDateTime postedDate,String category,String Location) {
-        this.jobId = jobId;
-        this.title = title;
-        this.uname = uname;
-        this.Description = description;
-        this.Requirements = requirements;
-        this.Deadline = deadline;
-        this.postedDate = postedDate;
-        this.category = category;
-        this.Location = Location;
-    }
+   
 
     public Long getJobId() {
         return jobId;
@@ -117,4 +96,37 @@ public class JobList {
     public void setPostedDate(LocalDateTime postedDate) {
         this.postedDate = postedDate;
     }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public JobList(Long jobId, String title, Employer uname, String description, String requirements, Date deadline,
+            LocalDateTime postedDate, Category category, Location location) {
+        this.jobId = jobId;
+        this.title = title;
+        this.uname = uname;
+        this.Description = description;
+        this.Requirements = requirements;
+        this.Deadline = deadline;
+        this.postedDate = postedDate;
+        this.category = category;
+        this.location = location;
+    }
+
+    
+
+
 }
