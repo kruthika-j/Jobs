@@ -91,7 +91,6 @@ public class UserController {
         Employer employer = employerService.getEmployer(uname);
 
         if (employer != null) {
-            // EmployerDTO employerDTO = convertToDTO(employer);
             return ResponseEntity.status(HttpStatus.OK).body(employer);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employer not found");
@@ -106,7 +105,6 @@ public class UserController {
         JobSeeker jobSeeker = jobSeekerService.getJobSeeker(juname);
 
         if (jobSeeker != null) {
-            //JobSeekerDTO jobSeekerDTO = convertToDTO(jobSeeker);
             return ResponseEntity.status(HttpStatus.OK).body(jobSeeker);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobSeeker not found");

@@ -116,7 +116,6 @@ public class JobListService {
 
     public List<JobList> getJobsByLocation(String stateName) {
         Location location = locationRepository.findByStateName(stateName);
-        System.out.println(location+"=========================");
         return jobListRepository.findByLocation(location);
     }
 
@@ -128,8 +127,9 @@ public class JobListService {
         }
     }
 
-    public JobList editJob(Long jobId, JobList updatedJob) {
+    public JobList editJob(Long jobId, JobList updatedJob,String uname) {
         JobList existingJob = jobListRepository.findById(jobId).get();
+        Employer employer = employerRepository.findByUname(uname);
 
         if (existingJob != null) {
             existingJob.setTitle(updatedJob.getTitle());
@@ -138,6 +138,7 @@ public class JobListService {
             existingJob.setCategory(updatedJob.getCategory());
             existingJob.setDeadline(updatedJob.getDeadline());
             existingJob.setLocation(updatedJob.getLocation());
+            existingJob.setUname(employer);
             return jobListRepository.save(existingJob);
         } else {
             return null;

@@ -1,5 +1,7 @@
 package com.kiruthika.job.Entity;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -9,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -45,6 +48,11 @@ public class Employer {
 
     @NotNull
     private String Designation;
+
+    
+    @OneToMany(mappedBy = "uname", cascade = CascadeType.REMOVE)
+    private List<JobList> jobList;
+
 
     public String getUname() {
         return uname;

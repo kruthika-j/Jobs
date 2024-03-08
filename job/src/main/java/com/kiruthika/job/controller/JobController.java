@@ -17,11 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kiruthika.job.Entity.Category;
 import com.kiruthika.job.Entity.JobList;
 import com.kiruthika.job.Service.JobListService;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 public class JobController {
@@ -41,7 +38,7 @@ public class JobController {
         }
     }
 
-    @GetMapping("/jobSeeker/jobs/show-jobs-in-my-location")
+    @GetMapping("/jobSeeker/jobs/my-location")
     public List<JobList> getJobsInMyLocation() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String uname = authentication.getName();
@@ -99,8 +96,10 @@ public class JobController {
     @PutMapping("/employer/edit-job/{jobId}")
     public ResponseEntity<Object> editJob(@PathVariable Long jobId, @RequestBody JobList updatedJob)
             throws HttpMessageNotReadableException {
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                String uname = authentication.getName();
         try {
-            JobList editedJob = jobListingService.editJob(jobId, updatedJob);
+            JobList editedJob = jobListingService.editJob(jobId, updatedJob, uname);
 
             if (editedJob != null) {
                 return ResponseEntity.ok(editedJob);

@@ -1,6 +1,7 @@
 package com.kiruthika.job.Entity;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -10,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -39,6 +41,12 @@ public class JobSeeker {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "location_id", referencedColumnName = "locationId", nullable = false)
     private Location location;
+
+    @OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.REMOVE)
+    private List<Application> applications;
+
+    @OneToMany(mappedBy = "juname", cascade = CascadeType.REMOVE)
+    private List<Resume> resumes;
 
     public String getEmail() {
         return email;
@@ -121,6 +129,22 @@ public class JobSeeker {
         DOB = dOB;
         Qualification = qualification;
         this.location = location;
+    }
+
+    public List<Application> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
+    }
+
+    public List<Resume> getResumes() {
+        return resumes;
+    }
+
+    public void setResumes(List<Resume> resumes) {
+        this.resumes = resumes;
     }
 
 }
