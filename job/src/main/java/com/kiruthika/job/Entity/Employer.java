@@ -3,16 +3,19 @@ package com.kiruthika.job.Entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "employer")
-public class Employer{
+public class Employer {
 
     @Id
     @NotNull(message = "enter username")
@@ -33,7 +36,11 @@ public class Employer{
     @Pattern(regexp = "^[6-9]\\d{9}", message = "enter valid contact number")
     @Column(length = 10)
     private String Contact;
-    private String Location;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "location_id", referencedColumnName = "locationId", nullable = false)
+    private Location location;
+
     private String Website;
 
     @NotNull
@@ -79,14 +86,6 @@ public class Employer{
         Contact = contact;
     }
 
-    public String getLocation() {
-        return Location;
-    }
-
-    public void setLocation(String location) {
-        Location = location;
-    }
-
     public String getWebsite() {
         return Website;
     }
@@ -95,7 +94,12 @@ public class Employer{
         Website = website;
     }
 
-    public Employer() {
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Employer(
@@ -104,15 +108,18 @@ public class Employer{
             @Pattern(regexp = "^[A-Z]{1}[0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}$", message = "enter valid company id") String companyId,
             String companyName,
             @NotNull @Pattern(regexp = "^[6-9]\\d{9}", message = "enter valid contact number") String contact,
-            String location, String website, @NotNull String designation) {
+            Location location, String website, @NotNull String designation) {
         this.uname = uname;
         this.password = password;
         this.companyId = companyId;
         this.companyName = companyName;
-        this.Contact = contact;
-        this.Location = location;
-        this.Website = website;
-        this.Designation = designation;
+        Contact = contact;
+        this.location = location;
+        Website = website;
+        Designation = designation;
+    }
+
+    public Employer() {
     }
 
     public String getDesignation() {
@@ -121,8 +128,5 @@ public class Employer{
 
     public void setDesignation(String designation) {
         Designation = designation;
-    } 
+    }
 }
-    
-
-

@@ -111,32 +111,7 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobSeeker not found");
         }
-    }
-
-    // private EmployerDTO convertToDTO(Employer employer) {
-    //     return new EmployerDTO(
-    //             employer.getUname(),
-    //             employer.getCompanyId(),
-    //             employer.getCompanyName(),
-    //             employer.getContact(),
-    //             employer.getLocation(),
-    //             employer.getWebsite(),
-    //             employer.getDesignation()
-    //     );
-    // }
-
-    // private JobSeekerDTO convertToDTO(JobSeeker jobSeeker) {
-    //     return new JobSeekerDTO(
-    //             jobSeeker.getJuname(),
-    //             jobSeeker.getEmail(),
-    //             jobSeeker.getName(),
-    //             jobSeeker.getContact(),
-    //             jobSeeker.getDOB(),
-    //             jobSeeker.getQualification(),
-    //             jobSeeker.getLocation()
-    //     );
-    // }
-    
+    }    
 
     // delete employer by username
     @DeleteMapping("/employer/delete")

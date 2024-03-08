@@ -51,7 +51,8 @@ public class ApplicationService {
             }
         }
 
-        public void applyForJob(JobSeeker jobSeeker, JobList jobList) throws Exception {
+        public void applyForJob(String juname, JobList jobList) throws Exception {
+            JobSeeker jobSeeker = jobSeekerRepository.findByjuname(juname);
             if (ApplicationRepository.existsByJobSeekerAndJobList(jobSeeker, jobList)) {
                 throw new RuntimeException("JobSeeker has already applied for this job");
             }

@@ -5,8 +5,11 @@ import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -32,7 +35,10 @@ public class JobSeeker {
 
     private Date DOB;
     private String Qualification;
-    private String Location;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "location_id", referencedColumnName = "locationId", nullable = false)
+    private Location location;
 
     public String getEmail() {
         return email;
@@ -48,14 +54,6 @@ public class JobSeeker {
 
     public void setDOB(Date dOB) {
         DOB = dOB;
-    }
-
-    public String getLocation() {
-        return Location;
-    }
-
-    public void setLocation(String location) {
-        Location = location;
     }
 
     public String getJuname() {
@@ -101,15 +99,28 @@ public class JobSeeker {
     public JobSeeker() {
     }
 
-    public JobSeeker(String juname, String password, String email, String name, String contact, Date dOB,
-            String qualification, String location) {
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public JobSeeker(
+            @Pattern(regexp = "^[a-z|A-Z|0-9|[@#$%^-_*]]{6,50}$", message = "username must be of 6 to 50 length with no special characters") String juname,
+            @NotNull(message = "enter password") @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\\-_*])([a-zA-Z0-9@#$%^&+=*.\\-_]){4,255}$", message = "enter valid password") String password,
+            @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "enter valid mail") String email,
+            String name, @Pattern(regexp = "^[6-9]\\d{9}", message = "enter valid contact number") String contact,
+            Date dOB, String qualification, Location location) {
         this.juname = juname;
         this.password = password;
         this.email = email;
-        this.Name = name;
-        this.Contact = contact;
-        this.DOB = dOB;
-        this.Qualification = qualification;
-        this.Location = location;
+        Name = name;
+        Contact = contact;
+        DOB = dOB;
+        Qualification = qualification;
+        this.location = location;
     }
+
 }

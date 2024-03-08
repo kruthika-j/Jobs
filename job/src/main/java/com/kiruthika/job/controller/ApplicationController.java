@@ -60,7 +60,9 @@ public class ApplicationController {
     @PostMapping("/jobSeeker/job/apply")
     public ResponseEntity<Object> applyForJob(@RequestBody Application request) {
         try {
-            jobApplicationService.applyForJob(request.getJobSeeker(), request.getJobList());
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String juname = authentication.getName();
+            jobApplicationService.applyForJob(juname, request.getJobList());
             return ResponseEntity.status(HttpStatus.CREATED).body("Job application submitted successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

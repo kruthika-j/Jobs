@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kiruthika.job.Entity.Category;
 import com.kiruthika.job.Entity.JobList;
 import com.kiruthika.job.Service.JobListService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class JobController {
@@ -39,6 +41,14 @@ public class JobController {
         }
     }
 
+    @GetMapping("/jobSeeker/jobs/show-jobs-in-my-location")
+    public List<JobList> getJobsInMyLocation() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String uname = authentication.getName();
+        List<JobList> jobs = jobListingService.getJobsInMyLocation(uname);
+        return jobs;
+    }
+    
     
     @GetMapping("/jobSeeker/jobs/today")
     public ResponseEntity<List<JobList>> getJobsPostedToday() {
@@ -77,7 +87,9 @@ public class JobController {
     @PostMapping("/employer/post-job")
     public ResponseEntity<Object> postJobs(@RequestBody JobList joblist) throws HttpMessageNotReadableException {
         try {
-            JobList postedJob = jobListingService.postJobs(joblist);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String uname = authentication.getName();
+            JobList postedJob = jobListingService.postJobs(joblist,uname);
             return ResponseEntity.status(HttpStatus.CREATED).body(postedJob);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error posting job" + e.getMessage());

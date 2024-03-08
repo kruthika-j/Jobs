@@ -16,10 +16,12 @@ import org.springframework.stereotype.Service;
 import com.kiruthika.job.Entity.Category;
 import com.kiruthika.job.Entity.Employer;
 import com.kiruthika.job.Entity.JobList;
+import com.kiruthika.job.Entity.JobSeeker;
 import com.kiruthika.job.Entity.Location;
 import com.kiruthika.job.Repository.CategoryRepository;
 import com.kiruthika.job.Repository.EmployerRepository;
 import com.kiruthika.job.Repository.JobListRepository;
+import com.kiruthika.job.Repository.JobSeekerRepository;
 import com.kiruthika.job.Repository.LocationRepository;
 
 @Service
@@ -37,6 +39,9 @@ public class JobListService {
     @Autowired
     private LocationRepository locationRepository;
 
+    @Autowired
+    private JobSeekerRepository jobSeekerRepository;
+
     public List<JobList> getAllJobs() {
         List<JobList> allJobs = jobListRepository.findAll();
 
@@ -46,6 +51,14 @@ public class JobListService {
                 .collect(Collectors.toList());
 
         return activeJobs;
+    }
+
+    public List<JobList> getJobsInMyLocation(String uname){
+        JobSeeker jobSeeker  = jobSeekerRepository.findByjuname(uname);
+        Location seekerLocation = jobSeeker.getLocation();
+        //String stateName = empLocation.getStateName();
+        List<JobList> allJobs = jobListRepository.findByLocation(seekerLocation);
+        return allJobs;
     }
 
     public List<JobList> getJobsPostedToday() {
@@ -67,7 +80,9 @@ public class JobListService {
         return jobListRepository.findByPostedDateBetween(startOfMonth, endOfMonth);
     }
 
-    public JobList postJobs(JobList jobList) throws Exception {
+    public JobList postJobs(JobList jobList, String uname) throws Exception {
+
+        Employer employer = employerRepository.findByUname(uname);
         if (!jobListRepository.existsById(jobList.getJobId())) {
             JobList job = new JobList();
             job.setCategory(jobList.getCategory());
@@ -77,7 +92,7 @@ public class JobListService {
             job.setLocation(jobList.getLocation());
             job.setRequirements(jobList.getRequirements());
             job.setTitle(jobList.getTitle());
-            job.setUname(jobList.getUname());
+            job.setUname(employer);
             job.setPostedDate(LocalDateTime.now());
             return jobListRepository.save(job);
         } else {
