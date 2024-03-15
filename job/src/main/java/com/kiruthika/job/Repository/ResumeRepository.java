@@ -12,6 +12,6 @@ public interface ResumeRepository extends JpaRepository<Resume, Long> {
     Resume findByJuname(JobSeeker juname);
     boolean existsByJuname(JobSeeker juname);
 
-    @Transactional
+    //@Transactional
     void deleteByJuname(JobSeeker juname);
 }

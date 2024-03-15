@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kiruthika.job.Entity.Application;
@@ -57,12 +56,12 @@ public class ApplicationController {
         return ResponseEntity.status(HttpStatus.OK).body(applications);
     }
 
-    @PostMapping("/jobSeeker/job/apply")
-    public ResponseEntity<Object> applyForJob(@RequestBody Application request) {
+    @PostMapping("/jobSeeker/job/apply/{jobId}")
+    public ResponseEntity<Object> applyForJob(@PathVariable Long jobId) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String juname = authentication.getName();
-            jobApplicationService.applyForJob(juname, request.getJobList());
+            jobApplicationService.applyForJob(juname, jobId);
             return ResponseEntity.status(HttpStatus.CREATED).body("Job application submitted successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -29,10 +29,10 @@ public class JobController {
     // jobs display in jobseeker login
     @GetMapping("/jobSeeker/jobs")
     public ResponseEntity<List<JobList>> getAllJobs() {
-        List<JobList> jobList = jobListingService.getAllJobs();
+        List<JobList> jobs = jobListingService.getAllJobs();
 
-        if (!jobList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body(jobList);
+        if (!jobs.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(jobs);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
@@ -82,11 +82,11 @@ public class JobController {
 
     // post jobs in employer login
     @PostMapping("/employer/post-job")
-    public ResponseEntity<Object> postJobs(@RequestBody JobList joblist) throws HttpMessageNotReadableException {
+    public ResponseEntity<Object> postJobs(@RequestBody JobList job) throws HttpMessageNotReadableException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String uname = authentication.getName();
-            JobList postedJob = jobListingService.postJobs(joblist,uname);
+            JobList postedJob = jobListingService.postJobs(job,uname);
             return ResponseEntity.status(HttpStatus.CREATED).body(postedJob);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error posting job" + e.getMessage());
@@ -117,29 +117,29 @@ public class JobController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String uname = authentication.getName();
-        List<JobList> jobList = jobListingService.getJobs(uname);
-        return ResponseEntity.status(HttpStatus.OK).body(jobList);
+        List<JobList> jobs = jobListingService.getJobs(uname);
+        return ResponseEntity.status(HttpStatus.OK).body(jobs);
     }
 
     // display jobs by title
     @GetMapping("/jobSeeker/search/byTitle/{title}")
     public ResponseEntity<List<JobList>> getJobsByTitle(@PathVariable("title") String title) {
-        List<JobList> jobList = jobListingService.getJobsByTitle(title);
-        return ResponseEntity.status(HttpStatus.OK).body(jobList);
+        List<JobList> jobs = jobListingService.getJobsByTitle(title);
+        return ResponseEntity.status(HttpStatus.OK).body(jobs);
     }
 
     // display jobs by category
     @GetMapping("/jobSeeker/search/byCategory/{category}")
     public ResponseEntity<List<JobList>> getJobsByCategory(@PathVariable("category") String categoryName) {
-        List<JobList> joblist = jobListingService.getJobsByCategory(categoryName);
-        return ResponseEntity.status(HttpStatus.OK).body(joblist);
+        List<JobList> jobs = jobListingService.getJobsByCategory(categoryName);
+        return ResponseEntity.status(HttpStatus.OK).body(jobs);
     }
 
     @GetMapping("/jobSeeker/search/byLocation/{location}")
     public ResponseEntity<List<JobList>> getJobsByLocation(@PathVariable("location") String cityName) {
-        List<JobList> joblist = jobListingService.getJobsByLocation(cityName);
+        List<JobList> jobs = jobListingService.getJobsByLocation(cityName);
         
-        return ResponseEntity.status(HttpStatus.OK).body(joblist);
+        return ResponseEntity.status(HttpStatus.OK).body(jobs);
     }
     // delete jobs by id
     @DeleteMapping("employer/job/delete/{jobId}")

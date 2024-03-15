@@ -124,27 +124,11 @@ public class JobSeeker {
         this.juname = juname;
         this.password = password;
         this.email = email;
-        Name = name;
-        Contact = contact;
-        DOB = dOB;
-        Qualification = qualification;
+        this.Name = name;
+        this.Contact = contact;
+        this.DOB = dOB;
+        this.Qualification = qualification;
         this.location = location;
-    }
-
-    public List<Application> getApplications() {
-        return applications;
-    }
-
-    public void setApplications(List<Application> applications) {
-        this.applications = applications;
-    }
-
-    public List<Resume> getResumes() {
-        return resumes;
-    }
-
-    public void setResumes(List<Resume> resumes) {
-        this.resumes = resumes;
     }
 
 }

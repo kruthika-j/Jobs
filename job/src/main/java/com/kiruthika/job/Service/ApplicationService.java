@@ -32,9 +32,9 @@ public class ApplicationService {
             return ApplicationRepository.findById(applicationId).orElse(null);
         }
         public List<Application> getApplicationByJuname(String juname) {
-            JobSeeker data = jobSeekerRepository.findByjuname(juname);
-            if(ApplicationRepository.existsByJobSeeker(data)){
-                return ApplicationRepository.findByJobSeeker(data);
+            JobSeeker jobSeeker = jobSeekerRepository.findByjuname(juname);
+            if(ApplicationRepository.existsByJobSeeker(jobSeeker)){
+                return ApplicationRepository.findByJobSeeker(jobSeeker);
             }
             else{
                 throw new RuntimeException("Application not found"); 
@@ -42,29 +42,30 @@ public class ApplicationService {
         }
 
         public List<Application> getApplicationByJobId(Long jobId){
-            JobList data = jobListRepository.findByJobId(jobId);
-            if(ApplicationRepository.existsByJobList(data)){
-                return ApplicationRepository.findByJobList(data);
+            JobList job = jobListRepository.findByJobId(jobId);
+            if(ApplicationRepository.existsByJobList(job)){
+                return ApplicationRepository.findByJobList(job);
             }
             else{
                 throw new RuntimeException("Application not found"); 
             }
         }
 
-        public void applyForJob(String juname, JobList jobList) throws Exception {
+        public void applyForJob(String juname, Long jobId) throws Exception {
             JobSeeker jobSeeker = jobSeekerRepository.findByjuname(juname);
-            if (ApplicationRepository.existsByJobSeekerAndJobList(jobSeeker, jobList)) {
+            JobList job = jobListRepository.findByJobId(jobId);
+            if (ApplicationRepository.existsByJobSeekerAndJobList(jobSeeker, job)) {
                 throw new RuntimeException("JobSeeker has already applied for this job");
             }
             Date currentDate = new Date();
-            if (currentDate.after(jobList.getDeadline())) {
+            if (currentDate.after(job.getDeadline())) {
                 throw new Exception("Application deadline has passed for this job.");
             }
             Application application =  new Application();
             Resume resume = resumeRepository.findByJuname(jobSeeker);
             application.setFile(resume.getFile());
             application.setJobSeeker(jobSeeker);
-            application.setJobList(jobList);
+            application.setJobList(job);
             application.setAppliedAt(LocalDateTime.now());
 
             ApplicationRepository.save(application);
